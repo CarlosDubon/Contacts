@@ -2,7 +2,7 @@ package com.bonusteam.contacts;
 
 public class Contacto {
 
-    private String imagen;
+    private int imagen;
     private String name;
     private String lastname;
     private String number;
@@ -10,7 +10,7 @@ public class Contacto {
     private String address;
     private String birth;
 
-    public Contacto(String imagen, String name, String lastname, String number, String email, String address, String birth) {
+    public Contacto(int imagen, String name, String lastname, String number, String email, String address, String birth) {
         this.imagen = imagen;
         this.name = name;
         this.lastname = lastname;
@@ -20,7 +20,7 @@ public class Contacto {
         this.birth = birth;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(int imagen) {
         this.imagen = imagen;
     }
 
@@ -48,7 +48,7 @@ public class Contacto {
         this.birth = birth;
     }
 
-    public String getImagen() {
+    public int getImagen() {
         return imagen;
     }
 
