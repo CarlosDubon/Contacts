@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ContactFragment extends Fragment {
+public class ContactFragment extends android.support.v4.app.Fragment {
     public ContactFragment() {
     }
 
