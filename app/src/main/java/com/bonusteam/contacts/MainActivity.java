@@ -48,12 +48,16 @@ public class MainActivity extends AppCompatActivity {
         addContacts();
 
 
-        viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"Recientes");
-        viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"Contactos");
-        viewPagerAdapter.addFragment(ContactFavFragment.newInstance(contactFavAdapter),"Favoritos");
+        viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
+        viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"");
+        viewPagerAdapter.addFragment(ContactFavFragment.newInstance(contactFavAdapter),"");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_favorite_black_24dp);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);
@@ -127,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                     while (emailCursor.moveToNext()){
                         email = emailCursor.getString(emailCursor.getColumnIndex(DATA));
                         contacto.setEmail(email);
-                        Log.d("DATO:",email);
                     }
                     emailCursor.close();
 
