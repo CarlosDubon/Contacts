@@ -2,6 +2,7 @@ package com.bonusteam.contacts;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         String phoneNumber = null;
         String email = null;
 
+
+
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
         String ID = ContactsContract.Contacts._ID;
         String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
@@ -65,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         Uri emailCONTENT_URI = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
         String emailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
         String DATA = ContactsContract.CommonDataKinds.Email.DATA;
+
+
+
 
         ContentResolver contentResolver = getContentResolver();
 
