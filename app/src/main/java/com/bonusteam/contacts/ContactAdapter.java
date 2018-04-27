@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> {
 
-    ArrayList<Contacto> contactosList = new ArrayList<>();
+    ArrayList<Contacto> contactosList;
 
     public ContactAdapter(ArrayList<Contacto> contactosList){
         this.contactosList = contactosList;
@@ -24,7 +25,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         ImageView imageView_contact;
         TextView textView_name;
         TextView textView_number;
-        TextView textView_call;
+        ImageButton textView_call;
         public ViewHolderContactAdapter(View itemView) {
             super(itemView);
             linearLayout_main = itemView.findViewById(R.id.container_main);
