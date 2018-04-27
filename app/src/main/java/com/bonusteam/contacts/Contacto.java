@@ -1,8 +1,10 @@
 package com.bonusteam.contacts;
 
+import android.graphics.Bitmap;
+
 public class Contacto {
 
-    private int imagen = 0;
+    private Bitmap imagen ;
     private String name = " ";
     private String lastname = " ";
     private String number =" ";
@@ -13,7 +15,7 @@ public class Contacto {
     public Contacto() {
     }
 
-    public Contacto(int imagen, String name, String lastname, String number, String email, String address, String birth) {
+    public Contacto(Bitmap imagen, String name, String lastname, String number, String email, String address, String birth) {
         this.imagen = imagen;
         this.name = name;
         this.lastname = lastname;
@@ -23,7 +25,7 @@ public class Contacto {
         this.birth = birth;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(Bitmap imagen) {
         this.imagen = imagen;
     }
 
@@ -51,7 +53,7 @@ public class Contacto {
         this.birth = birth;
     }
 
-    public int getImagen() {
+    public Bitmap getImagen() {
         return imagen;
     }
 

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         Contacto contacto;
         String phoneNumber = null;
         String email = null;
+        String image_uri;
+        Bitmap bitmap=null;
 
 
 
@@ -82,6 +87,21 @@ public class MainActivity extends AppCompatActivity {
                 String contactID = cursor.getString(cursor.getColumnIndex(ID));
                 String name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
                 int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+
+                image_uri = cursor
+                        .getString(cursor
+                                .getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+                if (image_uri != null) {
+                    try {
+                        bitmap = MediaStore.Images.Media .getBitmap(this.getContentResolver(), Uri.parse(image_uri));
+                        Log.d("DATO",bitmap+"");
+                        contacto.setImagen(bitmap);
+                    }catch (FileNotFoundException e) {
+                        e.printStackTrace(); }
+                    catch (IOException e) {
+                    e.printStackTrace(); }
+                }
+
 
                 if(hasPhoneNumber >0){
                     contacto.setName(name);
