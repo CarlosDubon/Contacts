@@ -2,13 +2,16 @@ package com.bonusteam.contacts;
 
 public class Contacto {
 
-    private int imagen;
-    private String name;
-    private String lastname;
-    private String number;
-    private String email;
-    private String address;
-    private String birth;
+    private int imagen = 0;
+    private String name = " ";
+    private String lastname = " ";
+    private String number =" ";
+    private String email=" ";
+    private String address=" ";
+    private String birth=" ";
+
+    public Contacto() {
+    }
 
     public Contacto(int imagen, String name, String lastname, String number, String email, String address, String birth) {
         this.imagen = imagen;
