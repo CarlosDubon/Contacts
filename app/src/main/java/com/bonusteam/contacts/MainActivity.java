@@ -25,10 +25,13 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private ArrayList<Contacto> contactList = new ArrayList<>();
+    private ArrayList<Contacto> contactFavList = new ArrayList<>();
+    private ArrayList<Contacto> contactRecentList = new ArrayList<>();
     private ContactAdapter contactAdapter;
+    private ContactAdapter contactFavAdapter;
+    private ContactAdapter contactRecentAdapter;
     private RecyclerView recyclerViewContacts;
 
-    //TODO: Importar contactos
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         contactAdapter = new ContactAdapter(contactList);
+        contactFavAdapter = new ContactAdapter(contactFavList);
+        contactRecentAdapter=new ContactAdapter(contactRecentList);
         addContacts();
 
 
+        viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"Recientes");
         viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"Contactos");
+        viewPagerAdapter.addFragment(ContactFavFragment.newInstance(contactFavAdapter),"Favoritos");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
+
         String ID = ContactsContract.Contacts._ID;
         String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
         String HAS_PHONE_NUMBER = ContactsContract.Contacts.HAS_PHONE_NUMBER;
@@ -73,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         Uri emailCONTENT_URI = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
         String emailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
         String DATA = ContactsContract.CommonDataKinds.Email.DATA;
-
 
 
 
@@ -123,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("DATO:",email);
                     }
                     emailCursor.close();
+
                     contactList.add(contacto);
 
                 }
