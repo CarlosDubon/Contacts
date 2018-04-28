@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Contacts</string>
     <string name="text_generic_name">Nombre Generico</string>
+    <string name="text_generic_email">correogenerico@generico.com</string>
 </resources>
