@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private ContactAdapter contactAdapter;
     private ContactAdapter contactFavAdapter;
     private ContactAdapter contactRecentAdapter;
-    private RecyclerView recyclerViewContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +41,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewpager_id);
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        contactAdapter = new ContactAdapter(contactList);
-        contactFavAdapter = new ContactAdapter(contactFavList);
-        contactRecentAdapter=new ContactAdapter(contactRecentList);
+        setAdapters();
         addContacts();
 
 
@@ -62,7 +59,55 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);
     }
+    public void setAdapters(){
+        contactAdapter = new ContactAdapter(contactList) {
+            @Override
+            public void addFavorite(int index) {
+                contactList.get(index).setFavorite(true);
+                contactFavList.add(contactList.get(index));
+                notifyDataSetChanged();
+                notifyItemInserted(index);
+                int i = contactFavList.indexOf(contactList.get(index));
+                contactFavAdapter.notifyItemInserted(i);
+            }
 
+            @Override
+            public void removeFavorite(int index) {
+                contactList.get(index).setFavorite(false);
+                contactFavList.remove(contactList.get(index));
+                notifyDataSetChanged();
+                int i = contactFavList.indexOf(contactList.get(index));
+                contactFavAdapter.notifyItemRemoved(index);
+                contactFavAdapter.notifyItemRangeRemoved(i,contactFavList.size());
+            }
+        };
+        contactFavAdapter = new ContactAdapter(contactFavList) {
+            @Override
+            public void addFavorite(int index) {}
+
+            @Override
+            public void removeFavorite(int index) {
+                int i = contactList.indexOf(contactFavList.get(index));
+                Log.d("INDICE",i+" "+contactList.get(i));
+                contactList.get(i).setFavorite(false);
+                contactFavList.remove(index);
+                notifyItemRemoved(index);
+                notifyItemRangeRemoved(index,contactFavList.size());
+                contactAdapter.notifyDataSetChanged();
+            }
+        };
+        contactRecentAdapter= new ContactAdapter(contactRecentList) {
+            @Override
+            public void addFavorite(int index) {
+
+            }
+
+            @Override
+            public void removeFavorite(int index) {
+
+            }
+        };
+    }
     public void addContacts(){
         Contacto contacto;
         String phoneNumber = null;

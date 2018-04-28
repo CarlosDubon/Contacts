@@ -11,11 +11,12 @@ public class Contacto {
     private String email=" ";
     private String address=" ";
     private String birth=" ";
+    private boolean isFavorite=false;
 
     public Contacto() {
     }
 
-    public Contacto(Bitmap imagen, String name, String lastname, String number, String email, String address, String birth) {
+    public Contacto(Bitmap imagen, String name, String lastname, String number, String email, String address, String birth, boolean isFavorite) {
         this.imagen = imagen;
         this.name = name;
         this.lastname = lastname;
@@ -23,6 +24,15 @@ public class Contacto {
         this.email = email;
         this.address = address;
         this.birth = birth;
+        this.isFavorite = isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
     public void setImagen(Bitmap imagen) {

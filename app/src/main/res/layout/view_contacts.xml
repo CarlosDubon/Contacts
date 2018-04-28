@@ -47,6 +47,14 @@
                 />
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/text_favorite"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableRight="@drawable/ic_favorite_black_24dp"
+            android:visibility="invisible"
+            />
         <ImageButton
             android:id="@+id/btn_call"
             android:layout_weight="1"
