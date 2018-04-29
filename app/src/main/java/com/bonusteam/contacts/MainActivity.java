@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setElevation(0);
     }
     public void setAdapters(){
-        contactAdapter = new ContactAdapter(contactList) {
+        contactAdapter = new ContactAdapter(contactList,this) {
             @Override
             public void addFavorite(int index) {
                 contactList.get(index).setFavorite(true);
@@ -80,8 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 contactFavAdapter.notifyItemRemoved(index);
                 contactFavAdapter.notifyItemRangeRemoved(i,contactFavList.size());
             }
+
+            @Override
+            public void addRecents(int index) {
+                contactRecentList.add(contactList.get(index));
+                int i = contactRecentList.indexOf(contactList.get(index));
+                contactRecentAdapter.notifyItemInserted(index);
+                contactRecentAdapter.notifyItemRangeRemoved(i,contactRecentList.size());
+            }
         };
-        contactFavAdapter = new ContactAdapter(contactFavList) {
+        contactFavAdapter = new ContactAdapter(contactFavList,this) {
             @Override
             public void addFavorite(int index) {}
 
@@ -95,8 +103,16 @@ public class MainActivity extends AppCompatActivity {
                 notifyItemRangeRemoved(index,contactFavList.size());
                 contactAdapter.notifyDataSetChanged();
             }
+
+            @Override
+            public void addRecents(int index) {
+                contactRecentList.add(contactFavList.get(index));
+                int i = contactRecentList.indexOf(contactFavList.get(index));
+                contactRecentAdapter.notifyItemInserted(index);
+                contactRecentAdapter.notifyItemRangeRemoved(i,contactRecentList.size());
+            }
         };
-        contactRecentAdapter= new ContactAdapter(contactRecentList) {
+        contactRecentAdapter= new ContactAdapter(contactRecentList,this) {
             @Override
             public void addFavorite(int index) {
 
@@ -104,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void removeFavorite(int index) {
+
+            }
+
+            @Override
+            public void addRecents(int index) {
 
             }
         };

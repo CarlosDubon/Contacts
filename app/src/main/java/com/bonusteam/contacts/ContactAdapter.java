@@ -1,8 +1,12 @@
 package com.bonusteam.contacts;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,9 +27,12 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
 
     ArrayList<Contacto> contactosList;
     Dialog dialog;
+    Context contex;
 
-    public ContactAdapter(ArrayList<Contacto> contactosList){
+
+    public ContactAdapter(ArrayList<Contacto> contactosList, Context context){
         this.contactosList = contactosList;
+        this.contex = context;
     }
 
     public static class ViewHolderContactAdapter extends RecyclerView.ViewHolder{
@@ -43,7 +50,6 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
             textView_number = itemView.findViewById(R.id.contact_number);
             textView_fav = itemView.findViewById(R.id.text_favorite);
             textView_call = itemView.findViewById(R.id.btn_call);
-
 
         }
     }
@@ -65,9 +71,9 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
             @Override
             public void onClick(View v) {
                 ImageView imgContactDiag = dialog.findViewById(R.id.contact_image_dialog);
-                TextView nameContactDiag = dialog.findViewById(R.id.text_name_dialog);
-                TextView phoneContactDiag = dialog.findViewById(R.id.text_number_dialog);
-                TextView emailContactDiag = dialog.findViewById(R.id.text_email_dialog);
+                final TextView nameContactDiag = dialog.findViewById(R.id.text_name_dialog);
+                final TextView phoneContactDiag = dialog.findViewById(R.id.text_number_dialog);
+                final TextView emailContactDiag = dialog.findViewById(R.id.text_email_dialog);
                 TextView callContactDiag = dialog.findViewById(R.id.text_call);
                 TextView shareContactDiag = dialog.findViewById(R.id.text_share);
                 FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);;
@@ -113,6 +119,19 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                         }
                     }
                 });
+                callContactDiag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addRecents(vHolder.getAdapterPosition());
+                        callContact(phoneContactDiag.getText().toString());
+                    }
+                });
+                shareContactDiag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shareContact(nameContactDiag.getText().toString()+"\n"+phoneContactDiag.getText().toString()+"\n"+emailContactDiag.getText().toString());
+                    }
+                });
             }
         });
 
@@ -146,13 +165,40 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         }else {
             holder.textView_fav.setVisibility(View.INVISIBLE);
         }
+        holder.textView_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRecents(position);
+                callContact(holder.textView_number.getText().toString());
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return contactosList.size();
     }
+    public void callContact(String phone){
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"+phone));
+        try {
+            contex.startActivity(callIntent);
+        }catch (SecurityException e){
+            e.getMessage().toString();
+        }
+    }
+
+    public void shareContact(String info){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        Bundle bundle = new Bundle();
+        bundle.putString(Intent.EXTRA_TEXT,info);
+        shareIntent.putExtras(bundle);
+        contex.startActivity(shareIntent);
+
+    }
 
     public abstract void addFavorite(int index);
     public abstract void removeFavorite(int index);
+    public abstract void addRecents(int index);
 }
