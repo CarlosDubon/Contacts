@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> {
 
@@ -80,7 +81,19 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                 if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
                     imgContactDiag.setImageBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen());
                 }else{
-                    imgContactDiag.setImageResource(R.drawable.ic_launcher_background);
+                    Random random = new Random();
+                    int p = random.nextInt(3);
+                    switch (p){
+                        case 0:
+                            imgContactDiag.setImageResource(R.drawable.default_image_blue);
+                            break;
+                        case 1:
+                            imgContactDiag.setImageResource(R.drawable.default_image_green);
+                            break;
+                        case 2:
+                            imgContactDiag.setImageResource(R.drawable.default_image_red);
+                            break;
+                    }
                 }
 
                 dialog.show();
@@ -113,7 +126,20 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         if(contactosList.get(position).getImagen() != null){
             holder.imageView_contact.setImageBitmap(contactosList.get(position).getImagen());
         }else{
-            holder.imageView_contact.setImageResource(R.drawable.ic_launcher_background);
+            Random random = new Random();
+            int p = random.nextInt(3);
+            switch (p){
+                case 0:
+                    holder.imageView_contact.setImageResource(R.drawable.default_image_blue);
+                    break;
+                case 1:
+                    holder.imageView_contact.setImageResource(R.drawable.default_image_green);
+                    break;
+                case 2:
+                    holder.imageView_contact.setImageResource(R.drawable.default_image_red);
+                    break;
+            }
+
         }
         if(contactosList.get(position).isFavorite()){
             holder.textView_fav.setVisibility(View.VISIBLE);

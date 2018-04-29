@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp).select();
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_favorite_black_24dp);
 
         ActionBar actionBar = getSupportActionBar();

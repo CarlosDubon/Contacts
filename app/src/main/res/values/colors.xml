@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#E0E0E0</color>
     <color name="tabSelected">#EEEEEE</color>
-    <color name="backgroundActivity">#757575</color>
+    <color name="backgroundActivity">#2f3640</color>
     <color name="buttonFloatPink">#E91E63</color>
 </resources>
