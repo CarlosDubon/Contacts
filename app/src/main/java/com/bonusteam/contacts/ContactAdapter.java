@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -74,6 +76,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                 final TextView nameContactDiag = dialog.findViewById(R.id.text_name_dialog);
                 final TextView phoneContactDiag = dialog.findViewById(R.id.text_number_dialog);
                 final TextView emailContactDiag = dialog.findViewById(R.id.text_email_dialog);
+                TextView birthContactDiag = dialog.findViewById(R.id.text_birth_dialog);
                 TextView callContactDiag = dialog.findViewById(R.id.text_call);
                 TextView shareContactDiag = dialog.findViewById(R.id.text_share);
                 FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);;
@@ -82,7 +85,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                 nameContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getName());
                 phoneContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getNumber());
                 emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
-
+                birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
 
                 if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
                     imgContactDiag.setImageBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen());

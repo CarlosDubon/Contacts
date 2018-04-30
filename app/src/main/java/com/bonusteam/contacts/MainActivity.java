@@ -129,11 +129,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
+
     public void addContacts(){
         Contacto contacto;
         String phoneNumber = null;
         String email = null;
         String image_uri;
+        String birth = null;
         Bitmap bitmap=null;
 
 
@@ -152,7 +154,9 @@ public class MainActivity extends AppCompatActivity {
         String emailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
         String DATA = ContactsContract.CommonDataKinds.Email.DATA;
 
-
+        Uri birthCONTENT_URI = ContactsContract.Data.CONTENT_URI;
+        String birthCONTACT_ID = ContactsContract.Data.CONTACT_ID;
+        String birthDATA = ContactsContract.CommonDataKinds.Event.DATA;
 
         ContentResolver contentResolver = getContentResolver();
 
@@ -200,6 +204,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                     emailCursor.close();
 
+                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    String named = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    Cursor bdc = contentResolver.query(android.provider.ContactsContract.Data.CONTENT_URI, new String[] { ContactsContract.CommonDataKinds.Event.DATA }, android.provider.ContactsContract.Data.CONTACT_ID+" = "+id+" AND "+ ContactsContract.Data.MIMETYPE+" = '"+ ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE+"' AND "+ ContactsContract.CommonDataKinds.Event.TYPE+" = "+ ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
+                    if (bdc.getCount() > 0) {
+                        while (bdc.moveToNext()) {
+                            birth = bdc.getString(0);
+                            // now "id" is the user's unique ID, "name" is his full name and "birthday" is the date and time of his birth
+                           contacto.setBirth(birth);
+                        }
+                    }
+                    bdc.close();
                     contactList.add(contacto);
 
                 }

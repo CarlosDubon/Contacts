@@ -8,9 +8,9 @@ public class Contacto {
     private String name = " ";
     private String lastname = " ";
     private String number =" ";
-    private String email=" ";
-    private String address=" ";
-    private String birth=" ";
+    private String email=" -no available- ";
+    private String address=" -no available- ";
+    private String birth="-no available- ";
     private boolean isFavorite=false;
 
     public Contacto() {

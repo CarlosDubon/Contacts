@@ -4,4 +4,6 @@
     <string name="text_generic_email">correogenerico@generico.com</string>
     <string name="text_share">Share</string>
     <string name="text_call">Call</string>
+    <string name="text_email_address">Email Address</string>
+    <string name="text_phone">Phone</string>
 </resources>
