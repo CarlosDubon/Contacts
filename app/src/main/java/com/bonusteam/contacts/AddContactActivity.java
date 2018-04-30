@@ -1,8 +1,11 @@
 package com.bonusteam.contacts;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,13 +23,14 @@ import android.widget.TextView;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AddContactActivity extends AppCompatActivity {
 
-    ImageView imageContact;
-    FloatingActionButton loadImage;
-    EditText nameContact,phoneContact,emailContact;
-    TextView birth;
+    private ImageView imageContact;
+    private FloatingActionButton loadImage;
+    private EditText nameContact,phoneContact,emailContact,birth;
+    private DatePickerDialog.OnDateSetListener datePickerListener;
 
     private int REQUEST_CODE = 1;
 
@@ -50,6 +55,30 @@ public class AddContactActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
             }
         });
+
+        birth.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v,boolean hasFocus) {
+                if(hasFocus) {
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog dialog = new DatePickerDialog(AddContactActivity.this, android.R.style.Theme_Holo_Light_Dialog, datePickerListener, year, month, day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+                }
+            }
+        });
+
+        datePickerListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String birthString = year +"-"+month+"-"+dayOfMonth;
+                birth.setText(birthString);
+            }
+        };
 
     }
 

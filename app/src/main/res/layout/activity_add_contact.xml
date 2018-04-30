@@ -33,7 +33,7 @@
                 android:id="@+id/name_contact_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="@string/text_name"
                 android:layout_margin="16dp"
                 android:drawableLeft="@drawable/ic_person_black_24dp"
                 android:drawablePadding="16dp"
@@ -58,15 +58,14 @@
                 android:drawableLeft="@drawable/ic_email_black_24dp"
                 android:drawablePadding="16dp"
                 />
-            <TextView
+            <EditText
                 android:id="@+id/birth_contact_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:drawableLeft="@drawable/ic_event_black_24dp"
                 android:drawablePadding="16dp"
-                android:text="Birthday"
-                android:textSize="20sp"
+                android:hint="@string/text_birthday"
                 />
 
         </LinearLayout>
