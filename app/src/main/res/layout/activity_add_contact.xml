@@ -47,6 +47,7 @@
                 android:drawableLeft="@drawable/ic_call_black_24dp"
                 android:drawablePadding="16dp"
                 android:drawableTint="@android:color/black"
+                android:inputType="number"
                 />
             <EditText
                 android:id="@+id/email_contact_add"

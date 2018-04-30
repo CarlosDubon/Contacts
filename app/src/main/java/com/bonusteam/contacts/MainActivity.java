@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             Contacto newContact = bundle.getParcelable("NEW_CONTACT");
+            byte[] bytes = getIntent().getByteArrayExtra("CUSTOM_IMAGE");
+            Bitmap bm = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+            newContact.setImagen(bm);
             contactList.add(newContact);
             contactAdapter.notifyItemInserted(contactList.size());
         }

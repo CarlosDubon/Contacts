@@ -2,6 +2,7 @@ package com.bonusteam.contacts;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class AddContactActivity extends AppCompatActivity {
@@ -77,6 +80,7 @@ public class AddContactActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_contact_tb:
                 Contacto contacto = new Contacto();
+                //contacto.setImagen(convertImageViewToBitmap(imageContact));
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumber(phoneContact.getText().toString());
                 contacto.setEmail(emailContact.getText().toString());
@@ -84,10 +88,19 @@ public class AddContactActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,MainActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable("NEW_CONTACT",contacto);
+                intent.putExtra("CUSTOM_IMAGE",convertImageViewToBitmap(imageContact));
                 intent.putExtras(b);
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private byte[] convertImageViewToBitmap(ImageView v){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap bm =((BitmapDrawable)v.getDrawable()).getBitmap();
+        bm.compress(Bitmap.CompressFormat.PNG,100,stream);
+        byte[] bytes = stream.toByteArray();
+        return bytes;
     }
 }
