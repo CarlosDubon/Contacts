@@ -57,11 +57,22 @@
                 android:drawableLeft="@drawable/ic_email_black_24dp"
                 android:drawablePadding="16dp"
                 />
+            <TextView
+                android:id="@+id/birth_contact_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/ic_event_black_24dp"
+                android:drawablePadding="16dp"
+                android:text="Birthday"
+                android:textSize="20sp"
+                />
 
         </LinearLayout>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_addImage_contact_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_camera_alt_black_24dp"

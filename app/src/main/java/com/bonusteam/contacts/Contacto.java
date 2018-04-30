@@ -1,10 +1,14 @@
 package com.bonusteam.contacts;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Contacto {
+import java.io.Serializable;
 
-    private Bitmap imagen ;
+public class Contacto implements Parcelable {
+
+    private Bitmap imagen =null;
     private String name = " ";
     private String lastname = " ";
     private String number =" ";
@@ -12,6 +16,8 @@ public class Contacto {
     private String address=" -no available- ";
     private String birth="-no available- ";
     private boolean isFavorite=false;
+
+    public static String TYPE = "contacto";
 
     public Contacto() {
     }
@@ -26,6 +32,29 @@ public class Contacto {
         this.birth = birth;
         this.isFavorite = isFavorite;
     }
+
+    protected Contacto(Parcel in) {
+        imagen = in.readParcelable(Bitmap.class.getClassLoader());
+        name = in.readString();
+        lastname = in.readString();
+        number = in.readString();
+        email = in.readString();
+        address = in.readString();
+        birth = in.readString();
+        isFavorite = in.readByte() != 0;
+    }
+
+    public static final Creator<Contacto> CREATOR = new Creator<Contacto>() {
+        @Override
+        public Contacto createFromParcel(Parcel in) {
+            return new Contacto(in);
+        }
+
+        @Override
+        public Contacto[] newArray(int size) {
+            return new Contacto[size];
+        }
+    };
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
@@ -89,5 +118,23 @@ public class Contacto {
 
     public String getBirth() {
         return birth;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeParcelable(imagen, flags);
+        dest.writeString(name);
+        dest.writeString(lastname);
+        dest.writeString(number);
+        dest.writeString(email);
+        dest.writeString(address);
+        dest.writeString(birth);
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 }

@@ -187,7 +187,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         try {
             contex.startActivity(callIntent);
         }catch (SecurityException e){
-            e.getMessage().toString();
+            e.getMessage();
         }
     }
 

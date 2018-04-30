@@ -1,11 +1,14 @@
 package com.bonusteam.contacts;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,20 +34,27 @@ public class MainActivity extends AppCompatActivity {
     private ContactAdapter contactAdapter;
     private ContactAdapter contactFavAdapter;
     private ContactAdapter contactRecentAdapter;
+    private FloatingActionButton addContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         tabLayout = findViewById(R.id.tablayout_id);
         viewPager = findViewById(R.id.viewpager_id);
+        addContact = findViewById(R.id.btn_add_contact);
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         setAdapters();
         addContacts();
 
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            Contacto newContact = bundle.getParcelable("NEW_CONTACT");
+            contactList.add(newContact);
+            contactAdapter.notifyItemInserted(contactList.size());
+        }
 
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
         viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"");
@@ -58,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);
+
+        addContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AddContactActivity.class);
+                getApplicationContext().startActivity(intent)
+                ;
+            }
+        });
     }
     public void setAdapters(){
         contactAdapter = new ContactAdapter(contactList,this) {
@@ -154,9 +174,6 @@ public class MainActivity extends AppCompatActivity {
         String emailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
         String DATA = ContactsContract.CommonDataKinds.Email.DATA;
 
-        Uri birthCONTENT_URI = ContactsContract.Data.CONTENT_URI;
-        String birthCONTACT_ID = ContactsContract.Data.CONTACT_ID;
-        String birthDATA = ContactsContract.CommonDataKinds.Event.DATA;
 
         ContentResolver contentResolver = getContentResolver();
 
