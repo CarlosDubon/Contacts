@@ -17,7 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.io.FileNotFoundException;
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private ContactAdapter contactFavAdapter;
     private ContactAdapter contactRecentAdapter;
     private FloatingActionButton addContact;
+
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu,menu);
+        final MenuItem item = menu.findItem(R.id.search);
+        searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(!searchView.isIconified()){
+                    searchView.setIconified(true);
+                }
+                item.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final ArrayList<Contacto> filtr = filter(contactList,newText);
+                contactAdapter.setFilter(filtr);
+                return true;
+            }
+        });
+        return true;
+    }
+    private ArrayList<Contacto> filter(ArrayList<Contacto> contactList, String query){
+        query = query.toLowerCase();
+        final ArrayList<Contacto> filterContactList = new ArrayList<>();
+        for(Contacto model:contactList){
+            final String text = model.getName().toLowerCase();
+            if(text.startsWith(query) || text.contains(query)){
+                filterContactList.add(model);
+            }
+        }
+        return  filterContactList;
+    }
+
     public void setAdapters(){
         contactAdapter = new ContactAdapter(contactList,this) {
             @Override

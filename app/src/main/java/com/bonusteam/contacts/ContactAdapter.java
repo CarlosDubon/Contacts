@@ -201,6 +201,12 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
 
     }
 
+    public void setFilter(ArrayList<Contacto> contactosList){
+        this.contactosList = new ArrayList<>();
+        this.contactosList.addAll(contactosList);
+        notifyDataSetChanged();
+    }
+
     public abstract void addFavorite(int index);
     public abstract void removeFavorite(int index);
     public abstract void addRecents(int index);
