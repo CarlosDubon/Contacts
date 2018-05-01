@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,12 +60,17 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
+            Log.d("EXCEPTION","AUN ASI ENTRO AQUI");
+
             Contacto newContact = bundle.getParcelable("NEW_CONTACT");
-            byte[] bytes = getIntent().getByteArrayExtra("CUSTOM_IMAGE");
-            Bitmap bm = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-            newContact.setImagen(bm);
-            contactList.add(newContact);
-            contactAdapter.notifyItemInserted(contactList.size());
+            if(newContact!=null) {
+                byte[] bytes = getIntent().getByteArrayExtra("CUSTOM_IMAGE");
+                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                newContact.setImagen(bm);
+
+                contactList.add(newContact);
+                contactAdapter.notifyItemInserted(contactList.size());
+            }
         }
 
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
@@ -95,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.search_menu,menu);
         final MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
