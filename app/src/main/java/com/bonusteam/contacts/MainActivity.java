@@ -49,26 +49,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        if(savedInstanceState != null){
+            contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
+            contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
+            contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
+        }
         tabLayout = findViewById(R.id.tablayout_id);
         viewPager = findViewById(R.id.viewpager_id);
         addContact = findViewById(R.id.btn_add_contact);
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        if(contactList.isEmpty()) {
+            addContacts();
+        }
         setAdapters();
-        addContacts();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            Log.d("EXCEPTION","AUN ASI ENTRO AQUI");
-
-            Contacto newContact = bundle.getParcelable("NEW_CONTACT");
+            Contacto newContact;
+            newContact = bundle.getParcelable("NEW_CONTACT");
             if(newContact!=null) {
-                byte[] bytes = getIntent().getByteArrayExtra("CUSTOM_IMAGE");
-                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                newContact.setImagen(bm);
-
-                contactList.add(newContact);
+                byte[] bytes = bundle.getByteArray("CUSTOM_IMAGE");
+                if(bytes!=null){
+                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    newContact.setImagen(bm);
+                }
+                contactList.add(contactList.size(),newContact);
                 contactAdapter.notifyItemInserted(contactList.size());
             }
         }
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
+
     private ArrayList<Contacto> filter(ArrayList<Contacto> contactList, String query){
         query = query.toLowerCase();
         final ArrayList<Contacto> filterContactList = new ArrayList<>();
@@ -157,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void addRecents(int index) {
-                contactRecentList.add(contactList.get(index));
+                contactRecentList.add(0,contactList.get(index));
                 int i = contactRecentList.indexOf(contactList.get(index));
                 contactRecentAdapter.notifyItemInserted(index);
                 contactRecentAdapter.notifyItemRangeRemoved(i,contactRecentList.size());
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void addRecents(int index) {
-                contactRecentList.add(contactFavList.get(index));
+                contactRecentList.add(0,contactFavList.get(index));
                 int i = contactRecentList.indexOf(contactFavList.get(index));
                 contactRecentAdapter.notifyItemInserted(index);
                 contactRecentAdapter.notifyItemRangeRemoved(i,contactRecentList.size());
@@ -291,5 +298,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("CONTACT_LIST",contactList);
+        outState.putParcelableArrayList("CONTACT__FAV_LIST",contactFavList);
+        outState.putParcelableArrayList("CONTACT_RECENT_LIST",contactRecentList);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
+        contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
+        contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
     }
 }

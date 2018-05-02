@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ public class AddContactActivity extends AppCompatActivity {
     private FloatingActionButton loadImage;
     private EditText nameContact,phoneContact,emailContact,birth;
     private DatePickerDialog.OnDateSetListener datePickerListener;
+
 
     private int REQUEST_CODE = 1;
 
@@ -109,7 +111,6 @@ public class AddContactActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_contact_tb:
                 Contacto contacto = new Contacto();
-                //contacto.setImagen(convertImageViewToBitmap(imageContact));
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumber(phoneContact.getText().toString());
                 contacto.setEmail(emailContact.getText().toString());
@@ -117,7 +118,9 @@ public class AddContactActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,MainActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable("NEW_CONTACT",contacto);
-                intent.putExtra("CUSTOM_IMAGE",convertImageViewToBitmap(imageContact));
+                if(convertImageViewToBitmap(imageContact)!=null) {
+                    b.putByteArray("CUSTOM_IMAGE", convertImageViewToBitmap(imageContact));
+                }
                 intent.putExtras(b);
                 startActivity(intent);
                 break;
@@ -127,9 +130,15 @@ public class AddContactActivity extends AppCompatActivity {
 
     private byte[] convertImageViewToBitmap(ImageView v){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Bitmap bm =((BitmapDrawable)v.getDrawable()).getBitmap();
-        bm.compress(Bitmap.CompressFormat.PNG,100,stream);
-        byte[] bytes = stream.toByteArray();
-        return bytes;
+        try {
+            Bitmap bm = ((BitmapDrawable) v.getDrawable()).getBitmap();
+            if (bm != null) {
+                bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                return stream.toByteArray();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

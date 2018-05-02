@@ -1,10 +1,16 @@
 package com.bonusteam.contacts;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +28,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,7 +37,6 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
     ArrayList<Contacto> contactosList;
     Dialog dialog;
     Context contex;
-
 
     public ContactAdapter(ArrayList<Contacto> contactosList, Context context){
         this.contactosList = contactosList;
@@ -72,69 +78,88 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
 
             @Override
             public void onClick(View v) {
-                ImageView imgContactDiag = dialog.findViewById(R.id.contact_image_dialog);
-                final TextView nameContactDiag = dialog.findViewById(R.id.text_name_dialog);
-                final TextView phoneContactDiag = dialog.findViewById(R.id.text_number_dialog);
-                final TextView emailContactDiag = dialog.findViewById(R.id.text_email_dialog);
-                TextView birthContactDiag = dialog.findViewById(R.id.text_birth_dialog);
-                TextView callContactDiag = dialog.findViewById(R.id.text_call);
-                TextView shareContactDiag = dialog.findViewById(R.id.text_share);
-                FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);;
+                if(contex.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    ImageView imgContactDiag = dialog.findViewById(R.id.contact_image_dialog);
+                    final TextView nameContactDiag = dialog.findViewById(R.id.text_name_dialog);
+                    final TextView phoneContactDiag = dialog.findViewById(R.id.text_number_dialog);
+                    final TextView emailContactDiag = dialog.findViewById(R.id.text_email_dialog);
+                    TextView birthContactDiag = dialog.findViewById(R.id.text_birth_dialog);
+                    TextView callContactDiag = dialog.findViewById(R.id.text_call);
+                    TextView shareContactDiag = dialog.findViewById(R.id.text_share);
+                    FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);
+                    ;
 
 
-                nameContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getName());
-                phoneContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getNumber());
-                emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
-                birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
+                    nameContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getName());
+                    phoneContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getNumber());
+                    emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
+                    birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
 
-                if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
-                    imgContactDiag.setImageBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen());
-                }else{
-                    Random random = new Random();
-                    int p = random.nextInt(3);
-                    switch (p){
-                        case 0:
-                            imgContactDiag.setImageResource(R.drawable.default_image_blue);
-                            break;
-                        case 1:
-                            imgContactDiag.setImageResource(R.drawable.default_image_green);
-                            break;
-                        case 2:
-                            imgContactDiag.setImageResource(R.drawable.default_image_red);
-                            break;
-                    }
-                }
-
-                dialog.show();
-
-                btnFavorite.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(contactosList.get(vHolder.getAdapterPosition()).isFavorite()){
-                            removeFavorite(vHolder.getAdapterPosition());
-                            dialog.dismiss();
-                            Snackbar.make(parent,vHolder.textView_name.getText().toString() +" removed to favorites",Snackbar.LENGTH_SHORT).show();
-                        }else{
-                            addFavorite(vHolder.getAdapterPosition());
-                            dialog.dismiss();
-                            Snackbar.make(parent,vHolder.textView_name.getText().toString() +" added to favorites",Snackbar.LENGTH_SHORT).show();
-
+                    if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
+                        imgContactDiag.setImageBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen());
+                    } else {
+                        Random random = new Random();
+                        int p = random.nextInt(3);
+                        switch (p) {
+                            case 0:
+                                imgContactDiag.setImageResource(R.drawable.default_image_blue);
+                                break;
+                            case 1:
+                                imgContactDiag.setImageResource(R.drawable.default_image_green);
+                                break;
+                            case 2:
+                                imgContactDiag.setImageResource(R.drawable.default_image_red);
+                                break;
                         }
                     }
-                });
-                callContactDiag.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addRecents(vHolder.getAdapterPosition());
-                        callContact(phoneContactDiag.getText().toString());
+
+                    dialog.show();
+
+                    btnFavorite.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (contactosList.get(vHolder.getAdapterPosition()).isFavorite()) {
+                                removeFavorite(vHolder.getAdapterPosition());
+                                dialog.dismiss();
+                                Snackbar.make(parent, vHolder.textView_name.getText().toString() + " removed to favorites", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                addFavorite(vHolder.getAdapterPosition());
+                                dialog.dismiss();
+                                Snackbar.make(parent, vHolder.textView_name.getText().toString() + " added to favorites", Snackbar.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+                    callContactDiag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            addRecents(vHolder.getAdapterPosition());
+                            callContact(phoneContactDiag.getText().toString());
+                        }
+                    });
+                    shareContactDiag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            shareContact(nameContactDiag.getText().toString() + "\n" + phoneContactDiag.getText().toString() + "\n" + emailContactDiag.getText().toString());
+                        }
+                    });
+                }else if(contex.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    Bundle bundle = new Bundle();
+                    if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
+                        bundle.putByteArray("CONTACT_IMAGE", compressBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen()));
                     }
-                });
-                shareContactDiag.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        shareContact(nameContactDiag.getText().toString()+"\n"+phoneContactDiag.getText().toString()+"\n"+emailContactDiag.getText().toString());
-                    }
-                });
+                    bundle.putString("CONTACT_NAME",contactosList.get(vHolder.getAdapterPosition()).getName());
+                    bundle.putString("CONTACT_PHONE",contactosList.get(vHolder.getAdapterPosition()).getNumber());
+                    bundle.putString("CONTACT_BIRTH",contactosList.get(vHolder.getAdapterPosition()).getBirth());
+                    bundle.putString("CONTACT_EMAIL",contactosList.get(vHolder.getAdapterPosition()).getEmail());
+
+                    ContactDetailFragment contactDetailFragment = new ContactDetailFragment();
+                    contactDetailFragment.setArguments(bundle);
+                    FragmentManager fragmentManager = ((Activity)contex).getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.detail_contact_view,contactDetailFragment);
+                    fragmentTransaction.commit();
+                }
             }
         });
 
@@ -205,6 +230,13 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         this.contactosList = new ArrayList<>();
         this.contactosList.addAll(contactosList);
         notifyDataSetChanged();
+    }
+
+    private byte[] compressBitmap(Bitmap bm){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG,100,stream);
+        byte[] bytes = stream.toByteArray();
+        return bytes;
     }
 
     public abstract void addFavorite(int index);

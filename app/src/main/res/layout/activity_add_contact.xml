@@ -18,8 +18,8 @@
                 android:id="@+id/img_contact_add"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/default_image_blue"
                 android:scaleType="centerCrop"
+                android:background="@color/colorAccent"
                 />
         </LinearLayout>
         <LinearLayout

@@ -35,6 +35,7 @@ public class ContactRecentFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_contacts_recents,container,false);
         recyclerView = view.findViewById(R.id.recyclerview_contacts_recent);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(contactAdapter);
         return view;
     }

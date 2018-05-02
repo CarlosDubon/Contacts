@@ -35,6 +35,7 @@ public class ContactFragment extends Fragment {
         //Recycler view para contactos
         recyclerView = view.findViewById(R.id.recyclerview_contacts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(contactAdapter);
         //------------------------------------------
         return view;

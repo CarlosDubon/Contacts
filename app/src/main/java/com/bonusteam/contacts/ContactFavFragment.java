@@ -32,6 +32,7 @@ public class ContactFavFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_contacts_fav,container,false);
         recyclerView = view.findViewById(R.id.recyclerview_contacts_fav);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(contactAdapter);
         return view;
     }
