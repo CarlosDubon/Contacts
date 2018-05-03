@@ -32,11 +32,20 @@ public class ContactRecentFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if(savedInstanceState!=null){
+            contactAdapter = (ContactAdapter) savedInstanceState.getSerializable("CONTACT_ADAPTER");
+        }
         view = inflater.inflate(R.layout.fragment_contacts_recents,container,false);
         recyclerView = view.findViewById(R.id.recyclerview_contacts_recent);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(contactAdapter);
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("CONTACT_ADAPTER",contactAdapter);
     }
 }

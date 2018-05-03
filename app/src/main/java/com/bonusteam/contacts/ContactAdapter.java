@@ -13,6 +13,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,10 +31,12 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> {
+public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> implements
+        Serializable{
 
     ArrayList<Contacto> contactosList;
     Dialog dialog;
@@ -42,6 +46,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         this.contactosList = contactosList;
         this.contex = context;
     }
+
 
     public static class ViewHolderContactAdapter extends RecyclerView.ViewHolder{
         LinearLayout linearLayout_main;
@@ -155,10 +160,10 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
 
                     ContactDetailFragment contactDetailFragment = new ContactDetailFragment();
                     contactDetailFragment.setArguments(bundle);
-                    FragmentManager fragmentManager = ((Activity)contex).getFragmentManager();
+                    FragmentManager fragmentManager = ((Activity)v.getContext()).getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.detail_contact_view,contactDetailFragment);
-                    fragmentTransaction.commit();
+                    fragmentTransaction.commitAllowingStateLoss();
                 }
             }
         });
@@ -242,4 +247,6 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
     public abstract void addFavorite(int index);
     public abstract void removeFavorite(int index);
     public abstract void addRecents(int index);
+
+
 }

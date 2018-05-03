@@ -31,7 +31,8 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_contacts,container,false);
-
+        if(savedInstanceState!=null)
+            contactAdapter = (ContactAdapter) savedInstanceState.getSerializable("CONTACT_ADAPTER");
         //Recycler view para contactos
         recyclerView = view.findViewById(R.id.recyclerview_contacts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -41,8 +42,11 @@ public class ContactFragment extends Fragment {
         return view;
     }
 
+
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("CONTACT_ADAPTER",contactAdapter);
+        super.onSaveInstanceState(outState);
     }
 }

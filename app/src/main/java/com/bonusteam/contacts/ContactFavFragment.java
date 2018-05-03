@@ -1,5 +1,6 @@
 package com.bonusteam.contacts;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +30,9 @@ public class ContactFavFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        if(savedInstanceState!=null){
+            contactAdapter = (ContactAdapter) savedInstanceState.getSerializable("CONTACT_FAV_ADAPTER");
+        }
         view = inflater.inflate(R.layout.fragment_contacts_fav,container,false);
         recyclerView = view.findViewById(R.id.recyclerview_contacts_fav);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -40,5 +44,12 @@ public class ContactFavFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setRetainInstance(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putSerializable("CONTACT_FAV_ADAPTER",contactAdapter);
+        super.onSaveInstanceState(outState);
     }
 }

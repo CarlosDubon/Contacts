@@ -18,7 +18,6 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
     private String birth="-no available- ";
     private boolean isFavorite=false;
 
-    public static String TYPE = "contacto";
 
     public Contacto() {
     }
@@ -45,6 +44,17 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         isFavorite = in.readByte() != 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(imagen, flags);
+        dest.writeString(name);
+        dest.writeString(lastname);
+        dest.writeString(number);
+        dest.writeString(email);
+        dest.writeString(address);
+        dest.writeString(birth);
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
+    }
     public static final Creator<Contacto> CREATOR = new Creator<Contacto>() {
         @Override
         public Contacto createFromParcel(Parcel in) {
@@ -126,18 +136,6 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-        dest.writeParcelable(imagen, flags);
-        dest.writeString(name);
-        dest.writeString(lastname);
-        dest.writeString(number);
-        dest.writeString(email);
-        dest.writeString(address);
-        dest.writeString(birth);
-        dest.writeByte((byte) (isFavorite ? 1 : 0));
-    }
 
 
     @Override

@@ -45,21 +45,19 @@ public class MainActivity extends AppCompatActivity {
     private ContactAdapter contactRecentAdapter;
     private FloatingActionButton addContact;
 
-
     private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("STEP","ESTOY AQUI CREATE");
+
         if(savedInstanceState != null){
             contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
             contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
             contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
         }
-        setAdapters();
-        sortContact();
+
         tabLayout = findViewById(R.id.tablayout_id);
         viewPager = findViewById(R.id.viewpager_id);
         addContact = findViewById(R.id.btn_add_contact);
@@ -81,11 +79,20 @@ public class MainActivity extends AppCompatActivity {
                 contactAdapter.notifyItemInserted(contactList.size());
             }
         }
+
+        setAdapters();
+        sortContact();
+
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
         viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"");
         viewPagerAdapter.addFragment(ContactFavFragment.newInstance(contactFavAdapter),"");
 
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp).select();
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_favorite_black_24dp);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);
@@ -109,15 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
         sortContact();
 
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp).select();
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_favorite_black_24dp);
-
-
-
+        //*/
     }
 
     @Override
@@ -325,24 +324,17 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
-        contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
-        contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
-    }
 
     private void sortContact(){
         Collections.sort(contactList);
         contactAdapter.notifyDataSetChanged();
     }
 
-    @Override
+    /*@Override
     public void onConfigurationChanged(Configuration newConfig) {
         Intent refresh = new Intent(this, MainActivity.class);
         startActivity(refresh);//Start the same Activity
         finish();
         super.onConfigurationChanged(newConfig);
-    }
+    }*/
 }
