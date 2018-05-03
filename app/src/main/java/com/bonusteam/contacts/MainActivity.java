@@ -2,6 +2,7 @@ package com.bonusteam.contacts;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -335,5 +336,13 @@ public class MainActivity extends AppCompatActivity {
     private void sortContact(){
         Collections.sort(contactList);
         contactAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Intent refresh = new Intent(this, MainActivity.class);
+        startActivity(refresh);//Start the same Activity
+        finish();
+        super.onConfigurationChanged(newConfig);
     }
 }
