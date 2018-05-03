@@ -3,10 +3,11 @@ package com.bonusteam.contacts;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class Contacto implements Parcelable {
+public class Contacto implements Parcelable,Comparable<Contacto> {
 
     private Bitmap imagen =null;
     private String name = " ";
@@ -136,5 +137,11 @@ public class Contacto implements Parcelable {
         dest.writeString(address);
         dest.writeString(birth);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
+    }
+
+
+    @Override
+    public int compareTo(@NonNull Contacto o) {
+        return this.getName().compareTo(o.getName());
     }
 }

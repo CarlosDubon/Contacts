@@ -29,19 +29,21 @@ import android.widget.EditText;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-    private ArrayList<Contacto> contactList = new ArrayList<>();
-    private ArrayList<Contacto> contactFavList = new ArrayList<>();
-    private ArrayList<Contacto> contactRecentList = new ArrayList<>();
+    private static ArrayList<Contacto> contactList = new ArrayList<>();
+    private static ArrayList<Contacto> contactFavList = new ArrayList<>();
+    private static ArrayList<Contacto> contactRecentList = new ArrayList<>();
     private ContactAdapter contactAdapter;
     private ContactAdapter contactFavAdapter;
     private ContactAdapter contactRecentAdapter;
     private FloatingActionButton addContact;
+
 
     private SearchView searchView;
 
@@ -49,20 +51,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("STEP","ESTOY AQUI CREATE");
         if(savedInstanceState != null){
             contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
             contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
             contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
         }
+        setAdapters();
+        sortContact();
         tabLayout = findViewById(R.id.tablayout_id);
         viewPager = findViewById(R.id.viewpager_id);
         addContact = findViewById(R.id.btn_add_contact);
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        if(contactList.isEmpty()) {
-            addContacts();
-        }
-        setAdapters();
+
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
@@ -78,17 +80,11 @@ public class MainActivity extends AppCompatActivity {
                 contactAdapter.notifyItemInserted(contactList.size());
             }
         }
-
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
         viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"");
         viewPagerAdapter.addFragment(ContactFavFragment.newInstance(contactFavAdapter),"");
 
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp).select();
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_favorite_black_24dp);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setElevation(0);
@@ -101,6 +97,26 @@ public class MainActivity extends AppCompatActivity {
                 ;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("STEP","ESTOY AQUI RESUME");
+        if(contactList.size()==0) {
+            addContacts();
+        }
+        sortContact();
+
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_people_black_24dp).select();
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_favorite_black_24dp);
+
+
+
     }
 
     @Override
@@ -301,11 +317,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("CONTACT_LIST",contactList);
         outState.putParcelableArrayList("CONTACT__FAV_LIST",contactFavList);
@@ -319,5 +330,10 @@ public class MainActivity extends AppCompatActivity {
         contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
         contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
         contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
+    }
+
+    private void sortContact(){
+        Collections.sort(contactList);
+        contactAdapter.notifyDataSetChanged();
     }
 }

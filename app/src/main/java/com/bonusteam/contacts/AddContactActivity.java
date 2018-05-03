@@ -123,10 +123,12 @@ public class AddContactActivity extends AppCompatActivity {
                 }
                 intent.putExtras(b);
                 startActivity(intent);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private byte[] convertImageViewToBitmap(ImageView v){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
