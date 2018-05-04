@@ -133,7 +133,8 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                         @Override
                         public void onClick(View v) {
                             addRecents(vHolder.getAdapterPosition());
-                            callContact(phoneContactDiag.getText().toString());
+                            String phones[] = phoneContactDiag.getText().toString().split("\n");
+                            callContact(phones[0]);
                         }
                     });
                     shareContactDiag.setOnClickListener(new View.OnClickListener() {
