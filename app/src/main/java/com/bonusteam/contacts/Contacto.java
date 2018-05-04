@@ -10,12 +10,12 @@ import java.io.Serializable;
 public class Contacto implements Parcelable,Comparable<Contacto> {
 
     private Bitmap imagen =null;
-    private String name = " ";
+    private String name = "No Name";
     private String lastname = " ";
-    private String number =" ";
-    private String email=" -no available- ";
-    private String address=" -no available- ";
-    private String birth="-no available- ";
+    private String number ="-No Aviable-";
+    private String email=" -No Available- ";
+    private String address=" -No Available- ";
+    private String birth="-No Available- ";
     private boolean isFavorite=false;
 
     public static String TYPE = "contacto";

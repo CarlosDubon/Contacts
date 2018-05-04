@@ -32,7 +32,7 @@ public class AddContactActivity extends AppCompatActivity {
     private FloatingActionButton loadImage;
     private EditText nameContact,phoneContact,emailContact,birth;
     private DatePickerDialog.OnDateSetListener datePickerListener;
-
+    private Uri imageUri = null;
 
     private int REQUEST_CODE = 1;
 
@@ -90,6 +90,7 @@ public class AddContactActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
             Uri uri = data.getData();
+            imageUri = uri;
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
                 imageContact.setImageBitmap(bitmap);
@@ -118,21 +119,14 @@ public class AddContactActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,MainActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable("NEW_CONTACT",contacto);
-                //b.putString("Uri_IMAGE",bitmapToUri(imageContact));
+                if(imageUri != null) {
+                    b.putString("Uri_IMAGE", imageUri.toString());
+                }
                 intent.putExtras(b);
                 startActivity(intent);
-                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    private String bitmapToUri(ImageView v){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Bitmap bm = ((BitmapDrawable) v.getDrawable()).getBitmap();
-        bm.compress(Bitmap.CompressFormat.PNG,100,stream);
-        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(),bm,"Title",null);
-        return path;
-    }
 }

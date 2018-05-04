@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("ARRAY_INTERES",contactList.size()+"");
+
         if(savedInstanceState != null){
             contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
             contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
@@ -67,31 +69,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        setAdapters();
-        sortContact();
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            Contacto newContact;
-            newContact = bundle.getParcelable("NEW_CONTACT");
-            /*if(newContact!=null) {
-                Uri uri = Uri.parse(bundle.getString("Uri_IMAGE"));
-                if(uri != null){
-                    final InputStream imageStream;
-                    try {
-                        imageStream = getContentResolver().openInputStream(uri);
-                        final Bitmap bm = BitmapFactory.decodeStream(imageStream);
-                        newContact.setImagen(bm);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                contactList.add(contactList.size(),newContact);
-                contactAdapter.notifyItemInserted(contactList.size());
-            }*/
-            contactList.add(contactList.size(),newContact);
-            contactAdapter.notifyItemInserted(contactList.size());
-        }
+        setAdapters();
+
 
 
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
@@ -124,6 +104,32 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         if(contactList.size()==0) {
             addContacts();
         }
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            Contacto newContact;
+            newContact = bundle.getParcelable("NEW_CONTACT");
+            if(newContact!=null) {
+                String path = bundle.getString("Uri_IMAGE");
+                if (path != null) {
+                    Uri uri = Uri.parse(path);
+                    if (uri != null) {
+                        final InputStream imageStream;
+                        try {
+                            imageStream = getContentResolver().openInputStream(uri);
+                            final Bitmap bm = BitmapFactory.decodeStream(imageStream);
+                            newContact.setImagen(bm);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                contactList.add(newContact);
+                contactAdapter.notifyItemInserted(contactList.size());
+            }
+        }
+        sortContact();
+
     }
 
     @Override
