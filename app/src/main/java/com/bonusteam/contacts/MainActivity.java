@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -20,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private ContactAdapter contactFavAdapter;
     private ContactAdapter contactRecentAdapter;
     private FloatingActionButton addContact;
+    private LinearLayout mainContent;
 
     private SearchView searchView;
 
@@ -49,14 +53,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("ARRAY_INTERES",contactList.size()+"");
-
         if(savedInstanceState != null){
             contactList = savedInstanceState.getParcelableArrayList("CONTACT_LIST");
             contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
             contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
         }
-
+        mainContent = findViewById(R.id.main_container);
         tabLayout = findViewById(R.id.tablayout_id);
         viewPager = findViewById(R.id.viewpager_id);
         addContact = findViewById(R.id.btn_add_contact);
@@ -83,8 +85,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,AddContactActivity.class);
-                getApplicationContext().startActivity(intent)
-                ;
+                startActivity(intent);
             }
         });
     }
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     }
                 }
                 contactList.add(newContact);
+                clearPhonesContacts();
+                Snackbar.make(mainContent,"Duplicate phone numbers will be deleted",Snackbar.LENGTH_SHORT).show();
                 contactAdapter.notifyItemInserted(contactList.size());
             }
         }

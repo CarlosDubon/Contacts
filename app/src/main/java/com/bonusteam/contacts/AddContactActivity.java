@@ -1,6 +1,7 @@
 package com.bonusteam.contacts;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,16 +9,23 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddContactActivity extends AppCompatActivity {
@@ -27,6 +35,10 @@ public class AddContactActivity extends AppCompatActivity {
     private EditText nameContact,phoneContact,emailContact,birth;
     private DatePickerDialog.OnDateSetListener datePickerListener;
     private Uri imageUri = null;
+    private Button addField;
+    private LinearLayout phonesContainer;
+    private int extraPhones = 0;
+    private ArrayList<EditText> editTextPhones = new ArrayList<>();
 
     private int REQUEST_CODE = 1;
 
@@ -41,6 +53,31 @@ public class AddContactActivity extends AppCompatActivity {
         phoneContact = findViewById(R.id.phone_contact_add);
         emailContact = findViewById(R.id.email_contact_add);
         birth = findViewById(R.id.birth_contact_add);
+        addField = findViewById(R.id.add_new_phone_field);
+        phonesContainer = findViewById(R.id.container_phones);
+
+        addField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                extraPhones ++;
+                LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View addView = layoutInflater.inflate(R.layout.new_field_phone,null);
+                EditText editText = addView.findViewById(R.id.new_field);
+                Button rmButton = addView.findViewById(R.id.rm_new_phone_field);
+                editText.setId(extraPhones);
+                final EditText editTextPhone = addView.findViewById(extraPhones);
+                rmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editTextPhones.remove(editTextPhone);
+                        extraPhones--;
+                        ((LinearLayout)addView.getParent()).removeView(addView);
+                    }
+                });
+                editTextPhones.add(editTextPhone);
+                phonesContainer.addView(addView);
+            }
+        });
 
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +145,9 @@ public class AddContactActivity extends AppCompatActivity {
                 Contacto contacto = new Contacto();
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumbers(phoneContact.getText().toString());
+                for(int i=0;i<extraPhones;i++){
+                    contacto.setNumbers(editTextPhones.get(i).getText().toString());
+                }
                 contacto.setEmail(emailContact.getText().toString());
                 contacto.setBirth(birth.getText().toString());
                 Intent intent = new Intent(this,MainActivity.class);
@@ -118,6 +158,7 @@ public class AddContactActivity extends AppCompatActivity {
                 }
                 intent.putExtras(b);
                 startActivity(intent);
+
                 break;
         }
         return super.onOptionsItemSelected(item);
