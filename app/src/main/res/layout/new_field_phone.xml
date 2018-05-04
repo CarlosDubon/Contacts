@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
     <EditText
-        android:layout_weight="0.8"
+        android:layout_weight="0.9"
         android:id="@+id/new_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -17,13 +17,13 @@
         />
     <Button
         android:id="@+id/rm_new_phone_field"
-        android:layout_weight="0.3"
+        android:layout_weight="0.1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="remove"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_block_black_24dp"
+        android:drawableRight="@drawable/ic_close_black_24dp"
         android:textStyle="bold"
+        android:drawableTint="@color/buttonFloatPink"
         />
 
 </LinearLayout>

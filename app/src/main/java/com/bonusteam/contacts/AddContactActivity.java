@@ -65,6 +65,7 @@ public class AddContactActivity extends AppCompatActivity {
                 EditText editText = addView.findViewById(R.id.new_field);
                 Button rmButton = addView.findViewById(R.id.rm_new_phone_field);
                 editText.setId(extraPhones);
+                editText.setHint("Phone "+extraPhones);
                 final EditText editTextPhone = addView.findViewById(extraPhones);
                 rmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
