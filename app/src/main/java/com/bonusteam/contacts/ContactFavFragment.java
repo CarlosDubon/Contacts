@@ -31,7 +31,7 @@ public class ContactFavFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if(savedInstanceState!=null){
-            contactAdapter = (ContactAdapter) savedInstanceState.getSerializable("CONTACT_FAV_ADAPTER");
+            contactAdapter = (ContactAdapter) savedInstanceState.getParcelable("CONTACT_FAV_ADAPTER");
         }
         view = inflater.inflate(R.layout.fragment_contacts_fav,container,false);
         recyclerView = view.findViewById(R.id.recyclerview_contacts_fav);
@@ -49,7 +49,7 @@ public class ContactFavFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putSerializable("CONTACT_FAV_ADAPTER",contactAdapter);
+        outState.putParcelable("CONTACT_FAV_ADAPTER",contactAdapter);
         super.onSaveInstanceState(outState);
     }
 }

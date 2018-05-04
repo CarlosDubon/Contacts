@@ -18,19 +18,9 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
     private String birth="-no available- ";
     private boolean isFavorite=false;
 
+    public static String TYPE = "contacto";
 
     public Contacto() {
-    }
-
-    public Contacto(Bitmap imagen, String name, String lastname, String number, String email, String address, String birth, boolean isFavorite) {
-        this.imagen = imagen;
-        this.name = name;
-        this.lastname = lastname;
-        this.number = number;
-        this.email = email;
-        this.address = address;
-        this.birth = birth;
-        this.isFavorite = isFavorite;
     }
 
     protected Contacto(Parcel in) {

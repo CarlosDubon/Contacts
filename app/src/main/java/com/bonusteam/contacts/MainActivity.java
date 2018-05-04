@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -29,14 +30,16 @@ import android.widget.EditText;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
+    private  TabLayout tabLayout;
+    private  ViewPager viewPager;
+    private  ViewPagerAdapter viewPagerAdapter;
     private static ArrayList<Contacto> contactList = new ArrayList<>();
     private static ArrayList<Contacto> contactFavList = new ArrayList<>();
     private static ArrayList<Contacto> contactRecentList = new ArrayList<>();
@@ -64,24 +67,32 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        setAdapters();
+        sortContact();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             Contacto newContact;
             newContact = bundle.getParcelable("NEW_CONTACT");
-            if(newContact!=null) {
-                byte[] bytes = bundle.getByteArray("CUSTOM_IMAGE");
-                if(bytes!=null){
-                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    newContact.setImagen(bm);
+            /*if(newContact!=null) {
+                Uri uri = Uri.parse(bundle.getString("Uri_IMAGE"));
+                if(uri != null){
+                    final InputStream imageStream;
+                    try {
+                        imageStream = getContentResolver().openInputStream(uri);
+                        final Bitmap bm = BitmapFactory.decodeStream(imageStream);
+                        newContact.setImagen(bm);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 contactList.add(contactList.size(),newContact);
                 contactAdapter.notifyItemInserted(contactList.size());
-            }
+            }*/
+            contactList.add(contactList.size(),newContact);
+            contactAdapter.notifyItemInserted(contactList.size());
         }
 
-        setAdapters();
-        sortContact();
 
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
         viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"");
@@ -110,13 +121,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("STEP","ESTOY AQUI RESUME");
         if(contactList.size()==0) {
             addContacts();
         }
-        sortContact();
-
-        //*/
     }
 
     @Override
@@ -159,6 +166,16 @@ public class MainActivity extends AppCompatActivity {
     public void setAdapters(){
         contactAdapter = new ContactAdapter(contactList,this) {
             @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+
+            }
+
+            @Override
             public void addFavorite(int index) {
                 contactList.get(index).setFavorite(true);
                 contactFavList.add(contactList.get(index));
@@ -188,6 +205,16 @@ public class MainActivity extends AppCompatActivity {
         };
         contactFavAdapter = new ContactAdapter(contactFavList,this) {
             @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+
+            }
+
+            @Override
             public void addFavorite(int index) {}
 
             @Override
@@ -210,6 +237,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         contactRecentAdapter= new ContactAdapter(contactRecentList,this) {
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+
+            }
+
             @Override
             public void addFavorite(int index) {
 
@@ -330,11 +367,4 @@ public class MainActivity extends AppCompatActivity {
         contactAdapter.notifyDataSetChanged();
     }
 
-    /*@Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        Intent refresh = new Intent(this, MainActivity.class);
-        startActivity(refresh);//Start the same Activity
-        finish();
-        super.onConfigurationChanged(newConfig);
-    }*/
 }

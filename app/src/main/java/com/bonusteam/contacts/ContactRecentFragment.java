@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 public class ContactRecentFragment extends Fragment {
 
     View view;
-    RecyclerView recyclerView;
+    private  RecyclerView  recyclerView;
     ContactAdapter contactAdapter;
 
     public ContactRecentFragment() {
@@ -33,7 +33,7 @@ public class ContactRecentFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(savedInstanceState!=null){
-            contactAdapter = (ContactAdapter) savedInstanceState.getSerializable("CONTACT_ADAPTER");
+            contactAdapter = (ContactAdapter) savedInstanceState.getParcelable("CONTACT_ADAPTER");
         }
         view = inflater.inflate(R.layout.fragment_contacts_recents,container,false);
         recyclerView = view.findViewById(R.id.recyclerview_contacts_recent);
@@ -46,6 +46,6 @@ public class ContactRecentFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("CONTACT_ADAPTER",contactAdapter);
+        outState.putParcelable("CONTACT_ADAPTER",contactAdapter);
     }
 }

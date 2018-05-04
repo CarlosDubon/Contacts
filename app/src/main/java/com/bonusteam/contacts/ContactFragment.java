@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 public class ContactFragment extends Fragment {
     View view;
-    private RecyclerView recyclerView;
+    private  RecyclerView recyclerView;
     private ContactAdapter contactAdapter;
 
     public ContactFragment() {
@@ -31,8 +31,9 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_contacts,container,false);
-        if(savedInstanceState!=null)
-            contactAdapter = (ContactAdapter) savedInstanceState.getSerializable("CONTACT_ADAPTER");
+        if(savedInstanceState!=null) {
+            contactAdapter = (ContactAdapter) savedInstanceState.getParcelable("CONTACT_ADAPTER");
+        }
         //Recycler view para contactos
         recyclerView = view.findViewById(R.id.recyclerview_contacts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -46,7 +47,7 @@ public class ContactFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("CONTACT_ADAPTER",contactAdapter);
+        outState.putParcelable("CONTACT_ADAPTER",contactAdapter);
         super.onSaveInstanceState(outState);
     }
 }

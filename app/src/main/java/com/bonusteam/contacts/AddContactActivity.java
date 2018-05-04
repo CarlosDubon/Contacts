@@ -118,9 +118,7 @@ public class AddContactActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,MainActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable("NEW_CONTACT",contacto);
-                if(convertImageViewToBitmap(imageContact)!=null) {
-                    b.putByteArray("CUSTOM_IMAGE", convertImageViewToBitmap(imageContact));
-                }
+                //b.putString("Uri_IMAGE",bitmapToUri(imageContact));
                 intent.putExtras(b);
                 startActivity(intent);
                 finish();
@@ -130,17 +128,11 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
 
-    private byte[] convertImageViewToBitmap(ImageView v){
+    private String bitmapToUri(ImageView v){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        try {
-            Bitmap bm = ((BitmapDrawable) v.getDrawable()).getBitmap();
-            if (bm != null) {
-                bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                return stream.toByteArray();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        Bitmap bm = ((BitmapDrawable) v.getDrawable()).getBitmap();
+        bm.compress(Bitmap.CompressFormat.PNG,100,stream);
+        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(),bm,"Title",null);
+        return path;
     }
 }

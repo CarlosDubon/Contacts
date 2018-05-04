@@ -35,12 +35,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> implements
-        Serializable{
+public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> implements Parcelable{
 
     ArrayList<Contacto> contactosList;
-    Dialog dialog;
-    Context contex;
+    private   Dialog dialog;
+    private   Context contex;
 
     public ContactAdapter(ArrayList<Contacto> contactosList, Context context){
         this.contactosList = contactosList;
