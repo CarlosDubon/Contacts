@@ -4,14 +4,12 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,11 +17,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddContactActivity extends AppCompatActivity {
@@ -113,7 +107,7 @@ public class AddContactActivity extends AppCompatActivity {
             case R.id.add_contact_tb:
                 Contacto contacto = new Contacto();
                 contacto.setName(nameContact.getText().toString());
-                contacto.setNumber(phoneContact.getText().toString());
+                contacto.setNumbers(phoneContact.getText().toString());
                 contacto.setEmail(emailContact.getText().toString());
                 contacto.setBirth(birth.getText().toString());
                 Intent intent = new Intent(this,MainActivity.class);

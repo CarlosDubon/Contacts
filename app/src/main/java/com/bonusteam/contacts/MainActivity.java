@@ -2,14 +2,11 @@ package com.bonusteam.contacts;
 
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -18,15 +15,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,6 +27,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
 
@@ -69,10 +63,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-
         setAdapters();
-
-
 
         viewPagerAdapter.addFragment(ContactRecentFragment.newIntance(contactRecentAdapter),"");
         viewPagerAdapter.addFragment(ContactFragment.newIntance(contactAdapter),"");
@@ -103,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         super.onResume();
         if(contactList.size()==0) {
             addContacts();
+            clearPhonesContacts();
         }
 
         Bundle bundle = getIntent().getExtras();
@@ -312,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 if (image_uri != null) {
                     try {
                         bitmap = MediaStore.Images.Media .getBitmap(this.getContentResolver(), Uri.parse(image_uri));
-                        Log.d("DATO",bitmap+"");
                         contacto.setImagen(bitmap);
                     }catch (FileNotFoundException e) {
                         e.printStackTrace(); }
@@ -323,13 +314,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
                 if(hasPhoneNumber >0){
                     contacto.setName(name);
-                    Log.d("DATO",name);
                     Cursor phoneCursor = contentResolver.query(phoneCONTENT_URI,null,Phone_CONTACT_ID+" =? ", new String[]{contactID},null);
 
                     while (phoneCursor.moveToNext()){
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
-                        contacto.setNumber(phoneNumber);
-                        Log.d("DATO:",phoneNumber);
+                        phoneNumber = phoneNumber.replace(" ","");
+                        contacto.setNumbers(phoneNumber);
                     }
                     phoneCursor.close();
 
@@ -356,6 +346,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
                 }
             }
+        }
+    }
+
+    public void clearPhonesContacts(){
+        for(int i=0 ;i< contactList.size();i++){
+            HashSet hs = new HashSet();
+            hs.addAll(contactList.get(i).getNumbers());
+            contactList.get(i).getNumbers().clear();
+            contactList.get(i).getNumbers().addAll(hs);
         }
     }
 

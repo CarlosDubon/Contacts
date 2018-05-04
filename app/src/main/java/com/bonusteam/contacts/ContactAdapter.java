@@ -6,20 +6,15 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -91,11 +83,14 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     TextView callContactDiag = dialog.findViewById(R.id.text_call);
                     TextView shareContactDiag = dialog.findViewById(R.id.text_share);
                     FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);
-                    ;
 
+                    String phones="";
+                    for(int i=0;i<contactosList.get(vHolder.getAdapterPosition()).getNumbers().size();i++){
+                        phones = phones + contactosList.get(vHolder.getAdapterPosition()).getNumbers().get(i) + "\n";
+                    }
 
                     nameContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getName());
-                    phoneContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getNumber());
+                    phoneContactDiag.setText(phones);
                     emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
                     birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
 
@@ -152,8 +147,12 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
                         bundle.putByteArray("CONTACT_IMAGE", compressBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen()));
                     }
+                    String phones="";
+                    for(int i=0;i<contactosList.get(vHolder.getAdapterPosition()).getNumbers().size();i++){
+                        phones = phones+contactosList.get(vHolder.getAdapterPosition()).getNumbers().get(i) + "\n";
+                    }
                     bundle.putString("CONTACT_NAME",contactosList.get(vHolder.getAdapterPosition()).getName());
-                    bundle.putString("CONTACT_PHONE",contactosList.get(vHolder.getAdapterPosition()).getNumber());
+                    bundle.putString("CONTACT_PHONE",phones);
                     bundle.putString("CONTACT_BIRTH",contactosList.get(vHolder.getAdapterPosition()).getBirth());
                     bundle.putString("CONTACT_EMAIL",contactosList.get(vHolder.getAdapterPosition()).getEmail());
 
@@ -173,7 +172,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderContactAdapter holder, final int position) {
         holder.textView_name.setText(contactosList.get(position).getName());
-        holder.textView_number.setText(contactosList.get(position).getNumber());
+        holder.textView_number.setText(contactosList.get(position).getNumbers().get(0));
         if(contactosList.get(position).getImagen() != null){
             holder.imageView_contact.setImageBitmap(contactosList.get(position).getImagen());
         }else{
