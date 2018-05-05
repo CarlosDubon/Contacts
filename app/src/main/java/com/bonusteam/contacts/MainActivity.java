@@ -127,8 +127,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             Contacto newContacto;
             if(resultCode == RESULT_OK){
                 newContacto = data.getParcelableExtra("NEW_CONTACT");
+                Uri uri = data.getParcelableExtra("IMAGE_URI");
+                newContacto.setImagen(uri);
                 contactList.add(newContacto);
                 contactAdapter.notifyItemInserted(contactList.size());
+                contactAdapter.notifyDataSetChanged();
                 sortContact();
                 clearPhonesContacts();
             }

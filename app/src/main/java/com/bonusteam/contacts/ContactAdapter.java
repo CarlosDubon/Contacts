@@ -156,17 +156,8 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     });
                 }else if(contex.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                     Bundle bundle = new Bundle();
-                    if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
-                        bundle.putString("CONTACT_IMAGE",contactosList.get(vHolder.getAdapterPosition()).getImagen().toString() );
-                    }
-                    String phones="";
-                    for(int i=0;i<contactosList.get(vHolder.getAdapterPosition()).getNumbers().size();i++){
-                        phones = phones+contactosList.get(vHolder.getAdapterPosition()).getNumbers().get(i) + "\n";
-                    }
-                    bundle.putString("CONTACT_NAME",contactosList.get(vHolder.getAdapterPosition()).getName());
-                    bundle.putString("CONTACT_PHONE",phones);
-                    bundle.putString("CONTACT_BIRTH",contactosList.get(vHolder.getAdapterPosition()).getBirth());
-                    bundle.putString("CONTACT_EMAIL",contactosList.get(vHolder.getAdapterPosition()).getEmail());
+                    bundle.putParcelable("CONTACT",contactosList.get(vHolder.getAdapterPosition()));
+                    bundle.putInt("INDEX",vHolder.getAdapterPosition());
 
                     ContactDetailFragment contactDetailFragment = new ContactDetailFragment();
                     contactDetailFragment.setArguments(bundle);
@@ -174,6 +165,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.detail_contact_view,contactDetailFragment);
                     fragmentTransaction.commitAllowingStateLoss();
+
                 }
             }
         });

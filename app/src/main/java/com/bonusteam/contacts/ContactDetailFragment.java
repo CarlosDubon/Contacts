@@ -18,8 +18,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ContactDetailFragment extends android.app.Fragment {
-    TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare;
+    TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare,editContact;
     ImageView imageViewContact;
+    Contacto contacto;
+    int index;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,32 +34,23 @@ public class ContactDetailFragment extends android.app.Fragment {
         textViewEmail = view.findViewById(R.id.text_email_dialog);
         textViewCall = view.findViewById(R.id.text_call);
         textViewShare = view.findViewById(R.id.text_share);
+        editContact = view.findViewById(R.id.edit_btn);
 
         Bundle bundle = this.getArguments();
-
         if(bundle != null){
-            final InputStream imageStream;
-            try {
-                if(bundle.getString("CONTACT_IMAGE")!=null) {
-                    imageStream = getActivity().getContentResolver().openInputStream(Uri.parse(bundle.getString("CONTACT_IMAGE")));
-                    final Bitmap bm = BitmapFactory.decodeStream(imageStream);
-                    imageViewContact.setImageBitmap(bm);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            textViewName.setText(bundle.getString("CONTACT_NAME"));
-            if(!bundle.getString("CONTACT_PHONE").equals("")){
-                textViewPhone.setText(bundle.getString("CONTACT_PHONE"));
-            }
-            if(!bundle.getString("CONTACT_EMAIL").equals("")) {
-                textViewEmail.setText(bundle.getString("CONTACT_EMAIL"));
-            }
-            if (!bundle.getString("CONTACT_BIRTH").equals("")){
-                textViewBirth.setText(bundle.getString("CONTACT_BIRTH"));
-            }
-
+            contacto = bundle.getParcelable("CONTACT");
+            index = bundle.getInt("INDEX");
         }
+
+        imageViewContact.setImageURI(contacto.getImagen());
+        textViewName.setText(contacto.getName());
+        String phones="";
+        for(int i=0;i<contacto.getNumbers().size();i++){
+            phones = phones + contacto.getNumbers().get(i)+"\n";
+        }
+        textViewPhone.setText(phones);
+        textViewBirth.setText(contacto.getBirth());
+        textViewEmail.setText(contacto.getEmail());
 
         textViewCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +74,18 @@ public class ContactDetailFragment extends android.app.Fragment {
                 bundle.putString(Intent.EXTRA_TEXT,textViewName.getText().toString()+"\n"+textViewPhone.getText().toString());
                 shareIntent.putExtras(bundle);
                 startActivity(shareIntent);
+            }
+        });
+
+        editContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),EditContact.class);
+                Bundle bundleSend = new Bundle();
+                bundleSend.putParcelable("CONTACT_OBJ",contacto);
+                bundleSend.putInt("INDEX",index);
+                intent.putExtras(bundleSend);
+                startActivity(intent);
             }
         });
 

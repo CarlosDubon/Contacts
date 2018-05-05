@@ -149,6 +149,7 @@ public class AddContactActivity extends AppCompatActivity {
                 contacto.setBirth(birth.getText().toString());
                 Intent intent = new Intent();
                 intent.putExtra("NEW_CONTACT",contacto);
+                intent.putExtra("IMAGE_URI",imageUri);
                 setResult(RESULT_OK,intent);
                 finish();
                 break;
