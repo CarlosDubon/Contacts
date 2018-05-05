@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class ContactDetailFragment extends android.app.Fragment {
     TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare;
     ImageView imageViewContact;
@@ -33,21 +36,35 @@ public class ContactDetailFragment extends android.app.Fragment {
         Bundle bundle = this.getArguments();
 
         if(bundle != null){
-            byte[] bytes = bundle.getByteArray("CONTACT_IMAGE");
-            if(bytes != null) {
-                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageViewContact.setImageBitmap(bm);
+            final InputStream imageStream;
+            try {
+                if(bundle.getString("CONTACT_IMAGE")!=null) {
+                    imageStream = getActivity().getContentResolver().openInputStream(Uri.parse(bundle.getString("CONTACT_IMAGE")));
+                    final Bitmap bm = BitmapFactory.decodeStream(imageStream);
+                    imageViewContact.setImageBitmap(bm);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
             textViewName.setText(bundle.getString("CONTACT_NAME"));
-            textViewPhone.setText(bundle.getString("CONTACT_PHONE"));
-            textViewEmail.setText(bundle.getString("CONTACT_EMAIL"));
-            textViewBirth.setText(bundle.getString("CONTACT_BIRTH"));
+            if(!bundle.getString("CONTACT_PHONE").equals("")){
+                textViewPhone.setText(bundle.getString("CONTACT_PHONE"));
+            }
+            if(!bundle.getString("CONTACT_EMAIL").equals("")) {
+                textViewEmail.setText(bundle.getString("CONTACT_EMAIL"));
+            }
+            if (!bundle.getString("CONTACT_BIRTH").equals("")){
+                textViewBirth.setText(bundle.getString("CONTACT_BIRTH"));
+            }
+
         }
+
         textViewCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:"+textViewPhone.getText().toString()));
+                String phones[] = textViewPhone.getText().toString().split("\n");
+                callIntent.setData(Uri.parse("tel:"+phones[0]));
                 try {
                     startActivity(callIntent);
                 }catch (SecurityException e){

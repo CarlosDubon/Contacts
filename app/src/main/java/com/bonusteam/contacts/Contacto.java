@@ -1,6 +1,7 @@
 package com.bonusteam.contacts;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class Contacto implements Parcelable,Comparable<Contacto> {
 
-    private Bitmap imagen =null;
+    private Uri imagen =null;
     private String name = "No Name";
     private String lastname = " ";
     private ArrayList<String> numbers = new ArrayList<>();
@@ -23,7 +24,30 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
     public Contacto() {
     }
 
-    public Bitmap getImagen() {
+    protected Contacto(Parcel in) {
+        imagen = in.readParcelable(Uri.class.getClassLoader());
+        name = in.readString();
+        lastname = in.readString();
+        numbers = in.createStringArrayList();
+        email = in.readString();
+        address = in.readString();
+        birth = in.readString();
+        isFavorite = in.readByte() != 0;
+    }
+
+    public static final Creator<Contacto> CREATOR = new Creator<Contacto>() {
+        @Override
+        public Contacto createFromParcel(Parcel in) {
+            return new Contacto(in);
+        }
+
+        @Override
+        public Contacto[] newArray(int size) {
+            return new Contacto[size];
+        }
+    };
+
+    public Uri getImagen() {
         return imagen;
     }
 
@@ -55,7 +79,7 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         return isFavorite;
     }
 
-    public void setImagen(Bitmap imagen) {
+    public void setImagen(Uri imagen) {
         this.imagen = imagen;
     }
 
@@ -87,28 +111,10 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         isFavorite = favorite;
     }
 
-    protected Contacto(Parcel in) {
-        imagen = in.readParcelable(Bitmap.class.getClassLoader());
-        name = in.readString();
-        lastname = in.readString();
-        numbers = in.createStringArrayList();
-        email = in.readString();
-        address = in.readString();
-        birth = in.readString();
-        isFavorite = in.readByte() != 0;
+    @Override
+    public int compareTo(@NonNull Contacto o) {
+        return this.getName().compareTo(o.getName());
     }
-
-    public static final Creator<Contacto> CREATOR = new Creator<Contacto>() {
-        @Override
-        public Contacto createFromParcel(Parcel in) {
-            return new Contacto(in);
-        }
-
-        @Override
-        public Contacto[] newArray(int size) {
-            return new Contacto[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -125,10 +131,5 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         dest.writeString(address);
         dest.writeString(birth);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
-    }
-
-    @Override
-    public int compareTo(@NonNull Contacto o) {
-        return this.getName().compareTo(o.getName());
     }
 }

@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,14 +40,12 @@ public class AddContactActivity extends AppCompatActivity {
     private LinearLayout phonesContainer;
     private int extraPhones = 0;
     private ArrayList<EditText> editTextPhones = new ArrayList<>();
-
     private int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
-
         loadImage = findViewById(R.id.btn_addImage_contact_add);
         imageContact = findViewById(R.id.img_contact_add);
         nameContact = findViewById(R.id.name_contact_add);
@@ -144,6 +143,7 @@ public class AddContactActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_contact_tb:
                 Contacto contacto = new Contacto();
+                contacto.setImagen(imageUri);
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumbers(phoneContact.getText().toString());
                 for(int i=0;i<extraPhones;i++){
@@ -151,15 +151,11 @@ public class AddContactActivity extends AppCompatActivity {
                 }
                 contacto.setEmail(emailContact.getText().toString());
                 contacto.setBirth(birth.getText().toString());
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("NEW_CONTACT",contacto);
                 Intent intent = new Intent(this,MainActivity.class);
-                Bundle b = new Bundle();
-                b.putParcelable("NEW_CONTACT",contacto);
-                if(imageUri != null) {
-                    b.putString("Uri_IMAGE", imageUri.toString());
-                }
-                intent.putExtras(b);
+                intent.putExtras(bundle);
                 startActivity(intent);
-
                 break;
         }
         return super.onOptionsItemSelected(item);

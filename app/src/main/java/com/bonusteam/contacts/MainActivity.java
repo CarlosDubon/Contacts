@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private ContactAdapter contactFavAdapter;
     private ContactAdapter contactRecentAdapter;
     private FloatingActionButton addContact;
-    private LinearLayout mainContent;
 
     private SearchView searchView;
 
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             contactFavList = savedInstanceState.getParcelableArrayList("CONTACT__FAV_LIST");
             contactRecentList = savedInstanceState.getParcelableArrayList("CONTACT_RECENT_LIST");
         }
-        mainContent = findViewById(R.id.main_container);
         tabLayout = findViewById(R.id.tablayout_id);
         viewPager = findViewById(R.id.viewpager_id);
         addContact = findViewById(R.id.btn_add_contact);
@@ -88,6 +86,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 startActivity(intent);
             }
         });
+        if(getIntent().getExtras()!=null){
+            Contacto newContacto = (Contacto) getIntent().getExtras().getParcelable("NEW_CONTACT");
+            if(newContacto!=null)
+            contactList.add(newContacto);
+            contactAdapter.notifyItemInserted(contactList.size());
+            clearPhonesContacts();
+
+        }
+
     }
 
     @Override
@@ -96,32 +103,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         if(contactList.size()==0) {
             addContacts();
             clearPhonesContacts();
-        }
-
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            Contacto newContact;
-            newContact = bundle.getParcelable("NEW_CONTACT");
-            if(newContact!=null) {
-                String path = bundle.getString("Uri_IMAGE");
-                if (path != null) {
-                    Uri uri = Uri.parse(path);
-                    if (uri != null) {
-                        final InputStream imageStream;
-                        try {
-                            imageStream = getContentResolver().openInputStream(uri);
-                            final Bitmap bm = BitmapFactory.decodeStream(imageStream);
-                            newContact.setImagen(bm);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                contactList.add(newContact);
-                clearPhonesContacts();
-                Snackbar.make(mainContent,"Duplicate phone numbers will be deleted",Snackbar.LENGTH_SHORT).show();
-                contactAdapter.notifyItemInserted(contactList.size());
-            }
         }
         sortContact();
 
@@ -301,17 +282,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 String name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
                 int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
 
-                image_uri = cursor
-                        .getString(cursor
-                                .getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+                image_uri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
                 if (image_uri != null) {
-                    try {
-                        bitmap = MediaStore.Images.Media .getBitmap(this.getContentResolver(), Uri.parse(image_uri));
-                        contacto.setImagen(bitmap);
-                    }catch (FileNotFoundException e) {
-                        e.printStackTrace(); }
-                    catch (IOException e) {
-                    e.printStackTrace(); }
+                    contacto.setImagen(Uri.parse(image_uri));
                 }
 
 

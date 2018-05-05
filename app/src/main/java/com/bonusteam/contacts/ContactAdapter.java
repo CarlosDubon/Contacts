@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -94,8 +97,17 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
                     birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
 
-                    if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
-                        imgContactDiag.setImageBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen());
+                    if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
+                        if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
+                            final InputStream imageStream;
+                            try {
+                                imageStream = contex.getContentResolver().openInputStream(contactosList.get(vHolder.getAdapterPosition()).getImagen());
+                                final Bitmap bm = BitmapFactory.decodeStream(imageStream);
+                                imgContactDiag.setImageBitmap(bm);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } else {
                         Random random = new Random();
                         int p = random.nextInt(3);
@@ -146,7 +158,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                 }else if(contex.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                     Bundle bundle = new Bundle();
                     if(contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
-                        bundle.putByteArray("CONTACT_IMAGE", compressBitmap(contactosList.get(vHolder.getAdapterPosition()).getImagen()));
+                        bundle.putString("CONTACT_IMAGE",contactosList.get(vHolder.getAdapterPosition()).getImagen().toString() );
                     }
                     String phones="";
                     for(int i=0;i<contactosList.get(vHolder.getAdapterPosition()).getNumbers().size();i++){
@@ -175,7 +187,16 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         holder.textView_name.setText(contactosList.get(position).getName());
         holder.textView_number.setText(contactosList.get(position).getNumbers().get(0));
         if(contactosList.get(position).getImagen() != null){
-            holder.imageView_contact.setImageBitmap(contactosList.get(position).getImagen());
+            if (contactosList.get(position).getImagen() != null) {
+                final InputStream imageStream;
+                try {
+                    imageStream = contex.getContentResolver().openInputStream(contactosList.get(position).getImagen());
+                    final Bitmap bm = BitmapFactory.decodeStream(imageStream);
+                    holder.imageView_contact.setImageBitmap(bm);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
         }else{
             Random random = new Random();
             int p = random.nextInt(3);
@@ -234,13 +255,6 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         this.contactosList = new ArrayList<>();
         this.contactosList.addAll(contactosList);
         notifyDataSetChanged();
-    }
-
-    private byte[] compressBitmap(Bitmap bm){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG,100,stream);
-        byte[] bytes = stream.toByteArray();
-        return bytes;
     }
 
     public abstract void addFavorite(int index);
