@@ -55,6 +55,7 @@ public class AddContactActivity extends AppCompatActivity {
         addField = findViewById(R.id.add_new_phone_field);
         phonesContainer = findViewById(R.id.container_phones);
 
+
         addField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,12 +123,7 @@ public class AddContactActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
             Uri uri = data.getData();
             imageUri = uri;
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
-                imageContact.setImageBitmap(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            imageContact.setImageURI(uri);
         }
     }
 
@@ -151,11 +147,10 @@ public class AddContactActivity extends AppCompatActivity {
                 }
                 contacto.setEmail(emailContact.getText().toString());
                 contacto.setBirth(birth.getText().toString());
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("NEW_CONTACT",contacto);
-                Intent intent = new Intent(this,MainActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("NEW_CONTACT",contacto);
+                setResult(RESULT_OK,intent);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

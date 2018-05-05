@@ -1,6 +1,5 @@
 package com.bonusteam.contacts;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -131,5 +130,19 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         dest.writeString(address);
         dest.writeString(birth);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
+    }
+
+    @Override
+    public String toString() {
+        return "Contacto{" +
+                "imagen=" + imagen +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", numbers=" + numbers +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", birth='" + birth + '\'' +
+                ", isFavorite=" + isFavorite +
+                '}';
     }
 }

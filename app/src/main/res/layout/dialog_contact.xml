@@ -21,6 +21,15 @@
                 android:scaleType="centerCrop"
                 />
             <TextView
+                android:id="@+id/text_edit_dilog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_edit_black_24dp"
+                android:drawableTint="@android:color/white"
+                android:layout_alignParentRight="true"
+                android:padding="8dp"
+                />
+            <TextView
                 android:id="@+id/text_name_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

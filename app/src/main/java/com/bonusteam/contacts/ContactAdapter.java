@@ -7,8 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -16,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -85,6 +81,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     TextView birthContactDiag = dialog.findViewById(R.id.text_birth_dialog);
                     TextView callContactDiag = dialog.findViewById(R.id.text_call);
                     TextView shareContactDiag = dialog.findViewById(R.id.text_share);
+                    TextView editContactDiag = dialog.findViewById(R.id.text_edit_dilog);
                     FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);
 
                     String phones="";
@@ -98,16 +95,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
 
                     if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
-                        if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null) {
-                            final InputStream imageStream;
-                            try {
-                                imageStream = contex.getContentResolver().openInputStream(contactosList.get(vHolder.getAdapterPosition()).getImagen());
-                                final Bitmap bm = BitmapFactory.decodeStream(imageStream);
-                                imgContactDiag.setImageBitmap(bm);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        imgContactDiag.setImageURI(contactosList.get(vHolder.getAdapterPosition()).getImagen());
                     } else {
                         Random random = new Random();
                         int p = random.nextInt(3);
@@ -139,6 +127,17 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                                 Snackbar.make(parent, vHolder.textView_name.getText().toString() + " added to favorites", Snackbar.LENGTH_SHORT).show();
 
                             }
+                        }
+                    });
+                    editContactDiag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(contex,EditContact.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("CONTACT_OBJ",contactosList.get(vHolder.getAdapterPosition()));
+                            bundle.putInt("INDEX",vHolder.getAdapterPosition());
+                            intent.putExtras(bundle);
+                            contex.startActivity(intent);
                         }
                     });
                     callContactDiag.setOnClickListener(new View.OnClickListener() {
@@ -187,16 +186,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         holder.textView_name.setText(contactosList.get(position).getName());
         holder.textView_number.setText(contactosList.get(position).getNumbers().get(0));
         if(contactosList.get(position).getImagen() != null){
-            if (contactosList.get(position).getImagen() != null) {
-                final InputStream imageStream;
-                try {
-                    imageStream = contex.getContentResolver().openInputStream(contactosList.get(position).getImagen());
-                    final Bitmap bm = BitmapFactory.decodeStream(imageStream);
-                    holder.imageView_contact.setImageBitmap(bm);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+            holder.imageView_contact.setImageURI(contactosList.get(position).getImagen());
         }else{
             Random random = new Random();
             int p = random.nextInt(3);

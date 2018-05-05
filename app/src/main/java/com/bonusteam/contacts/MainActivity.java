@@ -83,17 +83,29 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,AddContactActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,4);
             }
         });
-        if(getIntent().getExtras()!=null){
-            Contacto newContacto = (Contacto) getIntent().getExtras().getParcelable("NEW_CONTACT");
-            if(newContacto!=null)
-            contactList.add(newContacto);
-            contactAdapter.notifyItemInserted(contactList.size());
-            clearPhonesContacts();
 
+        if(getIntent().getExtras()!=null){
+            Contacto modifyContact = (Contacto) getIntent().getExtras().getParcelable("MODIFY_CONTACT");
+            int pos = getIntent().getExtras().getInt("INDEX_OC");
+            if(modifyContact != null){
+                Log.d("MOD",pos+"");
+                Log.d("MOD",modifyContact.toString());
+                contactList.remove(pos);
+                contactAdapter.notifyItemRemoved(pos);
+                contactAdapter.notifyItemRangeChanged(pos,contactList.size());
+
+                contactList.add(modifyContact);
+                contactAdapter.notifyItemInserted(contactList.size());
+                contactFavAdapter.notifyDataSetChanged();
+                contactRecentAdapter.notifyDataSetChanged();
+
+            }
         }
+
+
 
     }
 
@@ -106,6 +118,21 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
         sortContact();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 4){
+            Contacto newContacto;
+            if(resultCode == RESULT_OK){
+                newContacto = data.getParcelableExtra("NEW_CONTACT");
+                contactList.add(newContacto);
+                contactAdapter.notifyItemInserted(contactList.size());
+                sortContact();
+                clearPhonesContacts();
+            }
+        }
     }
 
     @Override
