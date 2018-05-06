@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +31,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> implements Parcelable{
     private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
+    private int PERMISSION_MANAGE_DOCUMENTS = 97;
+
     ArrayList<Contacto> contactosList;
     private   Dialog dialog;
     private   Context contex;

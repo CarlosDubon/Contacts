@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 contactList.add(newContacto);
                 contactAdapter.notifyItemInserted(contactList.size());
                 contactAdapter.notifyDataSetChanged();
+                sortContact();
                 clearPhonesContacts();
             }
         }

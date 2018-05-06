@@ -1,12 +1,15 @@
 package com.bonusteam.contacts;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddContactActivity extends AppCompatActivity {
-
+    private int PERMISSIONS_READ_EXTERNAL_STORAGE = 97;
     private ImageView imageContact;
     private FloatingActionButton loadImage;
     private EditText nameContact,phoneContact,emailContact,birth;
@@ -83,10 +86,12 @@ public class AddContactActivity extends AppCompatActivity {
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_READ_EXTERNAL_STORAGE);
+                }
+                Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 

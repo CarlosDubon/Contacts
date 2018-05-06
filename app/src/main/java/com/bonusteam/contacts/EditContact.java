@@ -1,10 +1,13 @@
 package com.bonusteam.contacts;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
@@ -24,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class EditContact extends AppCompatActivity {
+    private int PERMISSIONS_READ_EXTERNAL_STORAGE = 97;
     private Contacto editContact;
     private EditText nameContact,phonesContact,emailContact,birthContact;
     private FloatingActionButton loadImage;
@@ -110,10 +114,12 @@ public class EditContact extends AppCompatActivity {
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_READ_EXTERNAL_STORAGE);
+                }
+                Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
