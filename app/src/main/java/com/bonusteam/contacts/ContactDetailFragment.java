@@ -1,13 +1,18 @@
 package com.bonusteam.contacts;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ContactDetailFragment extends android.app.Fragment {
+    private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
     TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare,editContact;
     ImageView imageViewContact;
     Contacto contacto;
@@ -59,6 +65,9 @@ public class ContactDetailFragment extends android.app.Fragment {
                 String phones[] = textViewPhone.getText().toString().split("\n");
                 callIntent.setData(Uri.parse("tel:"+phones[0]));
                 try {
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE},PERMISSIONS_REQUEST_CALL_PHONE);
+                    }
                     startActivity(callIntent);
                 }catch (SecurityException e){
                     e.getMessage();

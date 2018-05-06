@@ -1,18 +1,23 @@
 package com.bonusteam.contacts;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Parcel;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,6 +39,11 @@ import java.util.Collections;
 import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
+
+    private int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
+    private  int PERMISSIONS_READ_EXTERNAL_STORAGE =98;
+
 
     private  TabLayout tabLayout;
     private  ViewPager viewPager;
@@ -104,16 +115,13 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             }
         }
-
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(contactList.size()==0) {
-            addContacts();
+            requestContacts();
             clearPhonesContacts();
         }
         sortContact();
@@ -127,12 +135,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             Contacto newContacto;
             if(resultCode == RESULT_OK){
                 newContacto = data.getParcelableExtra("NEW_CONTACT");
-                Uri uri = data.getParcelableExtra("IMAGE_URI");
-                newContacto.setImagen(uri);
                 contactList.add(newContacto);
                 contactAdapter.notifyItemInserted(contactList.size());
                 contactAdapter.notifyDataSetChanged();
-                sortContact();
                 clearPhonesContacts();
             }
         }
@@ -378,4 +383,26 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         contactAdapter.notifyDataSetChanged();
     }
 
+    private void requestContacts(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},PERMISSIONS_REQUEST_READ_CONTACTS);
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSIONS_READ_EXTERNAL_STORAGE);
+
+        }else{
+            addContacts();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == PERMISSIONS_REQUEST_READ_CONTACTS && requestCode == PERMISSIONS_READ_EXTERNAL_STORAGE){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                requestContacts();
+            }else{
+                Snackbar.make(viewPager,"Permissions denail, contacts cant be show",Snackbar.LENGTH_SHORT);
+            }
+        }
+
+    }
 }
