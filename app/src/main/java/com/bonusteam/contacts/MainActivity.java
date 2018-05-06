@@ -41,8 +41,6 @@ import java.util.HashSet;
 public class MainActivity extends AppCompatActivity implements Serializable {
 
     private int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
-    private  int PERMISSIONS_READ_EXTERNAL_STORAGE =98;
 
 
     private  TabLayout tabLayout;
@@ -384,11 +382,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
 
     private void requestContacts(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},PERMISSIONS_REQUEST_READ_CONTACTS);
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSIONS_READ_EXTERNAL_STORAGE);
-
         }else{
             addContacts();
         }
@@ -396,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == PERMISSIONS_REQUEST_READ_CONTACTS && requestCode == PERMISSIONS_READ_EXTERNAL_STORAGE){
+        if(requestCode == PERMISSIONS_REQUEST_READ_CONTACTS){
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 requestContacts();
             }else{
