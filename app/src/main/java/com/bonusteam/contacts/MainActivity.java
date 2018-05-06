@@ -100,15 +100,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             Contacto modifyContact = (Contacto) getIntent().getExtras().getParcelable("MODIFY_CONTACT");
             int pos = getIntent().getExtras().getInt("INDEX_OC");
             if(modifyContact != null){
-                Log.d("MOD",pos+"");
-                Log.d("MOD",modifyContact.toString());
-                contactList.remove(pos);
-                contactAdapter.notifyItemRemoved(pos);
-                contactAdapter.notifyItemRangeChanged(pos,contactList.size());
-
-                contactList.add(modifyContact);
-                contactAdapter.notifyItemInserted(contactList.size());
-                contactFavAdapter.notifyDataSetChanged();
+                contactList.set(pos,modifyContact);
                 contactRecentAdapter.notifyDataSetChanged();
 
             }
