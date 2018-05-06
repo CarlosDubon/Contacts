@@ -106,7 +106,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
 
                     if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
-                        imgContactDiag.setImageURI(contactosList.get(vHolder.getAdapterPosition()).getImagen());
+                        imgContactDiag.setImageURI(Uri.parse(contactosList.get(vHolder.getAdapterPosition()).getImagen()));
                     } else {
                         Random random = new Random();
                         int p = random.nextInt(3);
@@ -195,7 +195,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         holder.textView_name.setText(contactosList.get(position).getName());
         holder.textView_number.setText(contactosList.get(position).getNumbers().get(0));
         if(contactosList.get(position).getImagen() != null){
-            holder.imageView_contact.setImageURI(contactosList.get(position).getImagen());
+            holder.imageView_contact.setImageURI(Uri.parse(contactosList.get(position).getImagen()));
         }else{
             Random random = new Random();
             int p = random.nextInt(3);

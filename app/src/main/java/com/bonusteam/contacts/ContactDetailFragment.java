@@ -48,7 +48,7 @@ public class ContactDetailFragment extends android.app.Fragment {
             index = bundle.getInt("INDEX");
         }
 
-        imageViewContact.setImageURI(contacto.getImagen());
+        imageViewContact.setImageURI(Uri.parse(contacto.getImagen()));
         textViewName.setText(contacto.getName());
         String phones="";
         for(int i=0;i<contacto.getNumbers().size();i++){

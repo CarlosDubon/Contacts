@@ -144,7 +144,7 @@ public class AddContactActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_contact_tb:
                 Contacto contacto = new Contacto();
-                contacto.setImagen(imageUri);
+                contacto.setImagen(imageUri+"");
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumbers(phoneContact.getText().toString());
                 for(int i=0;i<extraPhones;i++){

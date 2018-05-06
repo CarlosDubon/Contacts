@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
                 image_uri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
                 if (image_uri != null) {
-                    contacto.setImagen(Uri.parse(image_uri));
+                    contacto.setImagen(image_uri);
                 }
 
 

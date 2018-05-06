@@ -56,7 +56,7 @@ public class EditContact extends AppCompatActivity {
         if(reciverBundle!=null){
             editContact = reciverBundle.getParcelable("CONTACT_OBJ");
             index =reciverBundle.getInt("INDEX");
-            imageUri = editContact.getImagen();
+            imageUri = Uri.parse(editContact.getImagen());
         }
         addFieldPhone = findViewById(R.id.add_new_phone_field);
         phonesFields = findViewById(R.id.container_phones);
@@ -67,7 +67,7 @@ public class EditContact extends AppCompatActivity {
         birthContact = findViewById(R.id.birth_contact_edit);
         loadImage = findViewById(R.id.btn_addImage_contact_edit);
 
-        imageContact.setImageURI(editContact.getImagen());
+        imageContact.setImageURI(Uri.parse(editContact.getImagen()));
         nameContact.setText(editContact.getName());
         phonesContact.setText(editContact.getNumbers().get(0));
         emailContact.setText(editContact.getEmail());
@@ -178,7 +178,7 @@ public class EditContact extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.add_contact_tb:
                 Contacto modifyContact = new Contacto();
-                modifyContact.setImagen(imageUri);
+                modifyContact.setImagen(imageUri+"");
                 modifyContact.setName(nameContact.getText().toString());
                 for (int i=0;i<editTextPhones.size();i++){
                     modifyContact.setNumbers(editTextPhones.get(i).getText().toString());
