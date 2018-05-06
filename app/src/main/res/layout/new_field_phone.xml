@@ -14,7 +14,7 @@
         android:drawablePadding="16dp"
         android:drawableTint="@android:color/black"
         android:inputType="number"
-        />
+        android:drawableStart="@drawable/ic_call_black_24dp" />
     <Button
         android:id="@+id/rm_new_phone_field"
         android:layout_weight="0.1"
@@ -24,6 +24,6 @@
         android:drawableRight="@drawable/ic_close_black_24dp"
         android:textStyle="bold"
         android:drawableTint="@color/buttonFloatPink"
-        />
+        android:drawableEnd="@drawable/ic_close_black_24dp" />
 
 </LinearLayout>

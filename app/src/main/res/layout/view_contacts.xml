@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:drawableRight="@drawable/ic_favorite_black_24dp"
             android:visibility="invisible"
-            />
+            android:drawableEnd="@drawable/ic_favorite_black_24dp" />
         <ImageButton
             android:id="@+id/btn_call"
             android:layout_weight="1"

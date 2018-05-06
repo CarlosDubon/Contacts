@@ -28,11 +28,21 @@
                     android:id="@+id/edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_edit_black_24dp"
+                    android:drawableStart="@drawable/ic_edit_black_24dp"
                     android:drawableTint="@android:color/white"
                     android:layout_alignParentRight="true"
                     android:textSize="36sp"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:drawableLeft="@drawable/ic_edit_black_24dp"
+                    android:layout_alignParentEnd="true" />
+                <TextView
+                    android:id="@+id/delete_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_delete_black_24dp"
+                    android:drawableTint="@android:color/white"
+                    android:padding="8dp"
+                    android:drawableStart="@drawable/ic_delete_black_24dp" />
             </RelativeLayout>
         </LinearLayout>
         <ScrollView
@@ -55,7 +65,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_person_black_24dp"
-                        android:drawableTint="@android:color/white"/>
+                        android:drawableTint="@android:color/white"
+                        android:drawableStart="@drawable/ic_person_black_24dp" />
                     <TextView
                         android:layout_weight="10"
                         android:id="@+id/text_name_dialog"
@@ -98,7 +109,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_event_black_24dp"
-                        android:drawableTint="@android:color/white"/>
+                        android:drawableTint="@android:color/white"
+                        android:drawableStart="@drawable/ic_event_black_24dp" />
                     <TextView
                         android:layout_weight="10"
                         android:id="@+id/text_birth_dialog"
@@ -121,7 +133,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_email_black_24dp"
-                        android:drawableTint="@android:color/white"/>
+                        android:drawableTint="@android:color/white"
+                        android:drawableStart="@drawable/ic_email_black_24dp" />
                     <TextView
                         android:layout_weight="10"
                         android:id="@+id/text_email_dialog"
@@ -177,6 +190,7 @@
         android:backgroundTint="@color/buttonFloatPink"
         app:borderWidth="0dp"
         app:fabSize="normal"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp" />
 
 </android.support.design.widget.CoordinatorLayout>
