@@ -28,11 +28,10 @@
                     android:id="@+id/edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_edit_black_24dp"
-                    android:drawableTint="@android:color/white"
+                    android:drawableStart="@drawable/edit_icon_white"
                     android:layout_alignParentRight="true"
                     android:padding="8dp"
-                    android:drawableLeft="@drawable/ic_edit_black_24dp"
+                    android:drawableLeft="@drawable/edit_icon_white"
                     android:layout_alignParentEnd="true" />
                 <TextView
                     android:id="@+id/delete_btn"
@@ -63,9 +62,8 @@
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_person_black_24dp"
-                        android:drawableTint="@android:color/white"
-                        android:drawableStart="@drawable/ic_person_black_24dp" />
+                        android:drawableLeft="@drawable/person_icon_white"
+                        android:drawableStart="@drawable/person_icon_white" />
                     <TextView
                         android:layout_weight="10"
                         android:id="@+id/text_name_dialog"
@@ -86,7 +84,7 @@
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_phone_black_24dp"
+                        android:drawableLeft="@drawable/ic_call_black_24dp"
                         android:drawableTint="@android:color/white"/>
                     <TextView
                         android:layout_weight="10"
@@ -107,9 +105,8 @@
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_event_black_24dp"
-                        android:drawableTint="@android:color/white"
-                        android:drawableStart="@drawable/ic_event_black_24dp" />
+                        android:drawableLeft="@drawable/calendar_icon_black"
+                        android:drawableStart="@drawable/calendar_icon_black" />
                     <TextView
                         android:layout_weight="10"
                         android:id="@+id/text_birth_dialog"
@@ -131,9 +128,8 @@
                         android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_email_black_24dp"
-                        android:drawableTint="@android:color/white"
-                        android:drawableStart="@drawable/ic_email_black_24dp" />
+                        android:drawableLeft="@drawable/email_icon_white"
+                        android:drawableStart="@drawable/email_icon_white" />
                     <TextView
                         android:layout_weight="10"
                         android:id="@+id/text_email_dialog"
@@ -159,9 +155,8 @@
                         android:padding="4dp"
                         android:textColor="@color/colorPrimary"
                         android:textSize="18sp"
-                        android:drawableTop="@drawable/ic_phone_forwarded_black_24dp"
+                        android:drawableTop="@drawable/call_send_icon_white"
                         android:textAlignment="center"
-                        android:drawableTint="@android:color/white"
                         />
                     <TextView
                         android:id="@+id/text_share"
@@ -171,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:drawableTint="@android:color/white"
-                        android:drawableTop="@drawable/ic_share_black_24dp"
+                        android:drawableTop="@drawable/share_icon_white"
                         />
                 </LinearLayout>
 

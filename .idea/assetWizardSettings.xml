@@ -71,7 +71,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_call_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_share_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -81,7 +81,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="call_icon_black" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="share_icon_white" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\Carlos" />
                           </map>
