@@ -36,7 +36,7 @@ import java.util.Random;
 public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolderContactAdapter> implements Parcelable{
     private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
     private int PERMISSION_MANAGE_DOCUMENTS = 97;
-
+    private ManagerAdministrator managerAdministrator;
     ArrayList<Contacto> contactosList;
     private   Dialog dialogContact;
     private   Context contex;
@@ -199,11 +199,10 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                             alertDialog.setPositiveButton(R.string.text_accept, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    contactosList.remove(vHolder.getAdapterPosition());
-                                    notifyItemRemoved(vHolder.getAdapterPosition());
-                                    notifyItemRangeChanged(vHolder.getAdapterPosition(),contactosList.size());
-                                    Snackbar.make(parent,nameContactDiag.getText().toString() +" "+ contex.getResources().getString(R.string.deleted_ok_snack),Snackbar.LENGTH_SHORT).show();
-                                    dialogContact.dismiss();
+                                    if(contex instanceof ManagerAdministrator){
+                                        ((ManagerAdministrator)contex).deleteContact(contex,contactosList.get(vHolder.getAdapterPosition()),vHolder.getAdapterPosition());
+                                        dialogContact.dismiss();
+                                    }
                                 }
                             });
 

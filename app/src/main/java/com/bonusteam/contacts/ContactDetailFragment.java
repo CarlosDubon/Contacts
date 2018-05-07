@@ -149,7 +149,7 @@ public class ContactDetailFragment extends android.app.Fragment {
                 alertDialog.setPositiveButton(R.string.text_accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        managerAdministrator.deleteContact(contacto,index);
+                        managerAdministrator.deleteContact(getActivity(),contacto,index);
                     }
                 });
 

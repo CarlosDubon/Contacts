@@ -3,6 +3,7 @@ package com.bonusteam.contacts;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -398,10 +399,22 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
     }
 
     @Override
-    public void deleteContact(final Contacto contacto, final int index) {
-        contactList.remove(index);
-        contactAdapter.notifyItemRemoved(index);
-        contactAdapter.notifyItemRangeChanged(index,contactList.size());
+    public void deleteContact(final Context context, final Contacto contacto, final int index) {
+        if(contactFavList.indexOf(contacto)>-1) {
+            contactFavList.remove(contactFavList.indexOf(contacto));
+            contactFavAdapter.notifyItemRemoved(contactFavList.indexOf(contacto));
+            contactFavAdapter.notifyItemRangeChanged(contactFavList.indexOf(contacto),contactFavList.size());
+        }
+        if(contactRecentList.indexOf(contacto)>-1){
+            contactRecentList.remove(contactRecentList.indexOf(contacto));
+            contactRecentAdapter.notifyItemRemoved(contactRecentList.indexOf(contacto));
+            contactRecentAdapter.notifyItemRangeChanged(contactRecentList.indexOf(contacto),contactRecentList.size());
+        }
+        if(contactList.indexOf(contacto)>-1) {
+            contactList.remove(contactList.indexOf(contacto));
+            contactAdapter.notifyItemRemoved(contactList.indexOf(contacto));
+            contactAdapter.notifyItemRangeChanged(contactList.indexOf(contacto), contactList.size());
+        }
         if(!contactList.contains(contacto)) {
             Snackbar.make(viewPager, contacto.getName() + " " + getResources().getString(R.string.deleted_ok_snack), Snackbar.LENGTH_SHORT).show();
         }
