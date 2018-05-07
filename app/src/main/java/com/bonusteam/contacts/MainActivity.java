@@ -402,7 +402,8 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
         contactList.remove(index);
         contactAdapter.notifyItemRemoved(index);
         contactAdapter.notifyItemRangeChanged(index,contactList.size());
-        Snackbar.make(viewPager,contacto.getName()+" "+ getResources().getString(R.string.deleted_ok_snack),Snackbar.LENGTH_SHORT).show();
-
+        if(!contactList.contains(contacto)) {
+            Snackbar.make(viewPager, contacto.getName() + " " + getResources().getString(R.string.deleted_ok_snack), Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

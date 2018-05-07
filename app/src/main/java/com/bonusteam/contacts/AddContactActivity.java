@@ -152,7 +152,9 @@ public class AddContactActivity extends AppCompatActivity {
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumbers(phoneContact.getText().toString());
                 for(int i=0;i<extraPhones;i++){
-                    contacto.setNumbers(editTextPhones.get(i).getText().toString());
+                    if(!editTextPhones.get(i).getText().toString().equals("")) {
+                        contacto.setNumbers(editTextPhones.get(i).getText().toString());
+                    }
                 }
                 contacto.setEmail(emailContact.getText().toString());
                 contacto.setBirth(birth.getText().toString());

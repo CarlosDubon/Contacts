@@ -185,7 +185,9 @@ public class EditContact extends AppCompatActivity {
                 modifyContact.setImagen(imageUri+"");
                 modifyContact.setName(nameContact.getText().toString());
                 for (int i=0;i<editTextPhones.size();i++){
-                    modifyContact.setNumbers(editTextPhones.get(i).getText().toString());
+                    if(!editTextPhones.get(i).getText().toString().equals("")) {
+                        modifyContact.setNumbers(editTextPhones.get(i).getText().toString());
+                    }
                 }
                 modifyContact.setEmail(emailContact.getText().toString());
                 modifyContact.setBirth(birthContact.getText().toString());
