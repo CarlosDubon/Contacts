@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
         });
 
         if(getIntent().getExtras()!=null){
-            Contacto modifyContact = (Contacto) getIntent().getExtras().getParcelable("MODIFY_CONTACT");
+            Contacto modifyContact = getIntent().getExtras().getParcelable("MODIFY_CONTACT");
             int pos = getIntent().getExtras().getInt("INDEX_OC");
             if(modifyContact != null){
                 contactList.set(pos,modifyContact);

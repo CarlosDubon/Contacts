@@ -54,10 +54,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/text_phone"
-                        android:drawableLeft="@drawable/ic_call_black_24dp"
-                        android:drawableStart="@drawable/ic_call_black_24dp"
+                        android:drawableLeft="@drawable/call_icon_black"
+                        android:drawableStart="@drawable/call_icon_black"
                         android:drawablePadding="16dp"
-                        android:drawableTint="@android:color/black"
                         android:inputType="phone"
                         />
                     <Button

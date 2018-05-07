@@ -24,7 +24,7 @@
                 android:id="@+id/text_edit_dilog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_edit_black_24dp"
+                android:drawableLeft="@drawable/edit_icon_white"
                 android:drawableTint="@android:color/white"
                 android:layout_alignParentRight="true"
                 android:padding="8dp"
@@ -59,8 +59,8 @@
                 android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_phone_black_24dp"
-                android:drawableStart="@drawable/ic_phone_black_24dp" />
+                android:drawableLeft="@drawable/call_icon_black"
+                android:drawableStart="@drawable/call_icon_black" />
             <TextView
                 android:layout_weight="10"
                 android:id="@+id/text_number_dialog"
