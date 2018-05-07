@@ -2,17 +2,16 @@ package com.bonusteam.contacts;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -20,18 +19,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -40,7 +37,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
     private int PERMISSION_MANAGE_DOCUMENTS = 97;
 
     ArrayList<Contacto> contactosList;
-    private   Dialog dialog;
+    private   Dialog dialogContact;
     private   Context contex;
 
     public ContactAdapter(ArrayList<Contacto> contactosList, Context context){
@@ -75,8 +72,8 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         final ViewHolderContactAdapter vHolder = new ViewHolderContactAdapter(view);
 
         //Dialog initialization
-        dialog = new Dialog(parent.getContext());
-        dialog.setContentView(R.layout.dialog_contact);
+        dialogContact = new Dialog(parent.getContext());
+        dialogContact.setContentView(R.layout.dialog_contact);
 
 
 
@@ -85,25 +82,43 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
             @Override
             public void onClick(View v) {
                 if(contex.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    ImageView imgContactDiag = dialog.findViewById(R.id.contact_image_dialog);
-                    final TextView nameContactDiag = dialog.findViewById(R.id.text_name_dialog);
-                    final TextView phoneContactDiag = dialog.findViewById(R.id.text_number_dialog);
-                    final TextView emailContactDiag = dialog.findViewById(R.id.text_email_dialog);
-                    TextView birthContactDiag = dialog.findViewById(R.id.text_birth_dialog);
-                    TextView callContactDiag = dialog.findViewById(R.id.text_call);
-                    TextView shareContactDiag = dialog.findViewById(R.id.text_share);
-                    TextView editContactDiag = dialog.findViewById(R.id.text_edit_dilog);
-                    FloatingActionButton btnFavorite = dialog.findViewById(R.id.btn_fav);
-
+                    ImageView imgContactDiag = dialogContact.findViewById(R.id.contact_image_dialog);
+                    final TextView nameContactDiag = dialogContact.findViewById(R.id.text_name_dialog);
+                    final TextView phoneContactDiag = dialogContact.findViewById(R.id.text_number_dialog);
+                    final TextView emailContactDiag = dialogContact.findViewById(R.id.text_email_dialog);
+                    TextView birthContactDiag = dialogContact.findViewById(R.id.text_birth_dialog);
+                    TextView callContactDiag = dialogContact.findViewById(R.id.text_call);
+                    TextView shareContactDiag = dialogContact.findViewById(R.id.text_share);
+                    TextView editContactDiag = dialogContact.findViewById(R.id.text_edit_dilog);
+                    TextView deleteContactDiag = dialogContact.findViewById(R.id.text_delete_dialog);
+                    FloatingActionButton btnFavorite = dialogContact.findViewById(R.id.btn_fav);
+                    String textNoAviable = contex.getResources().getString(R.string.text_no_aviable);
                     String phones="";
                     for(int i=0;i<contactosList.get(vHolder.getAdapterPosition()).getNumbers().size();i++){
                         phones = phones + contactosList.get(vHolder.getAdapterPosition()).getNumbers().get(i) + "\n";
                     }
 
-                    nameContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getName());
-                    phoneContactDiag.setText(phones);
-                    emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
-                    birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
+                    if(!contactosList.get(vHolder.getAdapterPosition()).getName().equals("")) {
+                        nameContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getName());
+                    }else{
+                        nameContactDiag.setText(textNoAviable);
+                    }
+                    if(!phones.equals("")) {
+                        phoneContactDiag.setText(phones);
+                    }else{
+                        phoneContactDiag.setText(textNoAviable);
+                    }
+                    if(!contactosList.get(vHolder.getAdapterPosition()).getEmail().equals("")) {
+                        emailContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getEmail());
+                    }else{
+                        emailContactDiag.setText(textNoAviable);
+                    }
+
+                    if(!contactosList.get(vHolder.getAdapterPosition()).getBirth().equals("")) {
+                        birthContactDiag.setText(contactosList.get(vHolder.getAdapterPosition()).getBirth());
+                    }else{
+                        birthContactDiag.setText(textNoAviable);
+                    }
 
                     if (contactosList.get(vHolder.getAdapterPosition()).getImagen() != null){
                         imgContactDiag.setImageURI(Uri.parse(contactosList.get(vHolder.getAdapterPosition()).getImagen()));
@@ -123,19 +138,19 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                         }
                     }
 
-                    dialog.show();
+                    dialogContact.show();
 
                     btnFavorite.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (contactosList.get(vHolder.getAdapterPosition()).isFavorite()) {
                                 removeFavorite(vHolder.getAdapterPosition());
-                                dialog.dismiss();
-                                Snackbar.make(parent, vHolder.textView_name.getText().toString() + " removed to favorites", Snackbar.LENGTH_SHORT).show();
+                                dialogContact.dismiss();
+                                Snackbar.make(parent, vHolder.textView_name.getText().toString() + " " +contex.getResources().getString(R.string.text_contact_removed), Snackbar.LENGTH_SHORT).show();
                             } else {
                                 addFavorite(vHolder.getAdapterPosition());
-                                dialog.dismiss();
-                                Snackbar.make(parent, vHolder.textView_name.getText().toString() + " added to favorites", Snackbar.LENGTH_SHORT).show();
+                                dialogContact.dismiss();
+                                Snackbar.make(parent, vHolder.textView_name.getText().toString() +" " + contex.getResources().getString(R.string.text_contact_added), Snackbar.LENGTH_SHORT).show();
 
                             }
                         }
@@ -158,8 +173,8 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                             String phones[] = phoneContactDiag.getText().toString().split("\n");
                             if (ContextCompat.checkSelfPermission(contex, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions((Activity) contex, new String[]{Manifest.permission.CALL_PHONE},PERMISSIONS_REQUEST_CALL_PHONE);
-                                dialog.dismiss();
-                                dialog.show();
+                                dialogContact.dismiss();
+                                dialogContact.show();
                             }
                             callContact(phones[0]);
 
@@ -169,6 +184,44 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                         @Override
                         public void onClick(View v) {
                             shareContact(nameContactDiag.getText().toString() + "\n" + phoneContactDiag.getText().toString() + "\n" + emailContactDiag.getText().toString());
+                        }
+                    });
+                    deleteContactDiag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(contex);
+                            alertDialog.setTitle(R.string.title_alert_dialog);
+                            alertDialog.setMessage(R.string.message_alert_dialog);
+                            alertDialog.setIcon(R.drawable.ic_delete_black_24dp);
+
+                            alertDialog.setPositiveButton(R.string.text_accept, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    contactosList.remove(vHolder.getAdapterPosition());
+                                    notifyItemRemoved(vHolder.getAdapterPosition());
+                                    notifyItemRangeChanged(vHolder.getAdapterPosition(),contactosList.size());
+                                    Snackbar.make(parent,nameContactDiag.getText().toString() +" "+ contex.getResources().getString(R.string.deleted_ok_snack),Snackbar.LENGTH_SHORT).show();
+                                    dialogContact.dismiss();
+                                }
+                            });
+
+                            alertDialog.setNegativeButton(R.string.text_calncel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            AlertDialog diag = alertDialog.create();
+                            diag.show();
+
+                            Button okButton = diag.getButton(AlertDialog.BUTTON_POSITIVE);
+                            Button cancelButton = diag.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                            okButton.setTextColor(contex.getResources().getColor(R.color.colorPrimaryDark));
+                            cancelButton.setTextColor(contex.getResources().getColor(R.color.colorPrimary));
+
+
                         }
                     });
                 }else if(contex.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -192,8 +245,17 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderContactAdapter holder, final int position) {
-        holder.textView_name.setText(contactosList.get(position).getName());
-        holder.textView_number.setText(contactosList.get(position).getNumbers().get(0));
+        if(!contactosList.get(position).getName().equals("")) {
+            holder.textView_name.setText(contactosList.get(position).getName());
+        }else {
+            holder.textView_name.setText(contex.getResources().getString(R.string.text_no_aviable));
+        }
+
+        if(!contactosList.get(position).getNumbers().get(0).equals("")) {
+            holder.textView_number.setText(contactosList.get(position).getNumbers().get(0));
+        }else{
+            holder.textView_number.setText(contex.getResources().getString(R.string.text_no_aviable));
+        }
         if(contactosList.get(position).getImagen() != null){
             holder.imageView_contact.setImageURI(Uri.parse(contactosList.get(position).getImagen()));
         }else{

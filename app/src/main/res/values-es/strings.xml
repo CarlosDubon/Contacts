@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Contactos</string>
+    <string name="text_generic_name">Nombre Generico</string>
+    <string name="text_generic_email">correogenerico@generico.com</string>
+    <string name="text_share">Compartit</string>
+    <string name="text_call">Llamar</string>
+    <string name="text_email_address">Correo Electronico</string>
+    <string name="text_phone">Telefono</string>
+    <string name="text_birthday">Cumpleaños</string>
+    <string name="text_name">Nombre</string>
+    <string name="text_add">Agregar</string>
+    <string name="title_alert_dialog">Confirmar eliminación</string>
+    <string name="message_alert_dialog">¿Estas seguro que quieres eliminar este contacto?</string>
+    <string name="text_accept">OK</string>
+    <string name="text_calncel">Cancelar</string>
+    <string name="deleted_ok_snack">fue eliminado correctamente</string>
+    <string name="text_contact_removed">se removio de favoritos</string>
+    <string name="text_contact_added">se añadio a favoritos</string>
+    <string name="text_no_aviable">No disponible</string>
+
+</resources>

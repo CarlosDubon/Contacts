@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Random;
 
 public class ContactDetailFragment extends android.app.Fragment {
     private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
@@ -41,22 +42,54 @@ public class ContactDetailFragment extends android.app.Fragment {
         textViewCall = view.findViewById(R.id.text_call);
         textViewShare = view.findViewById(R.id.text_share);
         editContact = view.findViewById(R.id.edit_btn);
-
+        String textNoAviable = getActivity().getResources().getString(R.string.text_no_aviable);
         Bundle bundle = this.getArguments();
         if(bundle != null){
             contacto = bundle.getParcelable("CONTACT");
             index = bundle.getInt("INDEX");
         }
 
-        imageViewContact.setImageURI(Uri.parse(contacto.getImagen()));
-        textViewName.setText(contacto.getName());
+        if(contacto.getImagen()!=null) {
+            imageViewContact.setImageURI(Uri.parse(contacto.getImagen()));
+        }else{
+            Random random = new Random();
+            int p = random.nextInt(3);
+            switch (p) {
+                case 0:
+                    imageViewContact.setImageResource(R.drawable.default_image_blue);
+                    break;
+                case 1:
+                    imageViewContact.setImageResource(R.drawable.default_image_green);
+                    break;
+                case 2:
+                    imageViewContact.setImageResource(R.drawable.default_image_red);
+                    break;
+            }
+        }
+        if(!contacto.getName().equals("")) {
+            textViewName.setText(contacto.getName());
+        }else{
+            textViewName.setText(textNoAviable);
+        }
         String phones="";
         for(int i=0;i<contacto.getNumbers().size();i++){
             phones = phones + contacto.getNumbers().get(i)+"\n";
         }
-        textViewPhone.setText(phones);
-        textViewBirth.setText(contacto.getBirth());
-        textViewEmail.setText(contacto.getEmail());
+        if(!phones.equals("")) {
+            textViewPhone.setText(phones);
+        }else{
+            textViewPhone.setText(textNoAviable);
+        }
+        if(!contacto.getBirth().equals("")) {
+            textViewBirth.setText(contacto.getBirth());
+        }else{
+            textViewBirth.setText(textNoAviable);
+        }
+        if(!contacto.getEmail().equals("")) {
+            textViewEmail.setText(contacto.getEmail());
+        }else{
+            textViewEmail.setText(textNoAviable);
+        }
 
         textViewCall.setOnClickListener(new View.OnClickListener() {
             @Override

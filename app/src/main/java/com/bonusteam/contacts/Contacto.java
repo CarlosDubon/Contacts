@@ -9,15 +9,13 @@ import java.util.ArrayList;
 public class Contacto implements Parcelable,Comparable<Contacto> {
 
     private String imagen =null;
-    private String name = "No Name";
-    private String lastname = " ";
+    private String name = "";
+    private String lastname = "";
     private ArrayList<String> numbers = new ArrayList<>();
-    private String email=" -No Available- ";
-    private String address=" -No Available- ";
-    private String birth="-No Available- ";
+    private String email="";
+    private String address="";
+    private String birth="";
     private boolean isFavorite=false;
-
-    public static String TYPE = "contacto";
 
     public Contacto() {
     }

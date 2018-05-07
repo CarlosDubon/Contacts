@@ -68,7 +68,7 @@ public class AddContactActivity extends AppCompatActivity {
                 EditText editText = addView.findViewById(R.id.new_field);
                 Button rmButton = addView.findViewById(R.id.rm_new_phone_field);
                 editText.setId(extraPhones);
-                editText.setHint("Phone "+extraPhones);
+                editText.setHint(getResources().getString(R.string.text_phone)+" "+extraPhones);
                 final EditText editTextPhone = addView.findViewById(extraPhones);
                 rmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -144,7 +144,11 @@ public class AddContactActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_contact_tb:
                 Contacto contacto = new Contacto();
-                contacto.setImagen(imageUri+"");
+                if(imageUri!=null) {
+                    contacto.setImagen(imageUri + "");
+                }else{
+                    contacto.setImagen(null);
+                }
                 contacto.setName(nameContact.getText().toString());
                 contacto.setNumbers(phoneContact.getText().toString());
                 for(int i=0;i<extraPhones;i++){
