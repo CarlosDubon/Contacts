@@ -13,7 +13,7 @@
         android:drawableLeft="@drawable/ic_call_black_24dp"
         android:drawablePadding="16dp"
         android:drawableTint="@android:color/black"
-        android:inputType="number"
+        android:inputType="phone"
         android:drawableStart="@drawable/ic_call_black_24dp" />
     <Button
         android:id="@+id/rm_new_phone_field"

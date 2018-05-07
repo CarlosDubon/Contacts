@@ -2,6 +2,9 @@ package com.bonusteam.contacts;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,12 +13,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,9 +30,10 @@ import java.util.Random;
 
 public class ContactDetailFragment extends android.app.Fragment {
     private int PERMISSIONS_REQUEST_CALL_PHONE = 99;
-    TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare,editContact;
+    TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare,editContact,deleteContact;
     ImageView imageViewContact;
     Contacto contacto;
+    private ManagerAdministrator managerAdministrator;
     int index;
     @Nullable
     @Override
@@ -42,6 +48,7 @@ public class ContactDetailFragment extends android.app.Fragment {
         textViewCall = view.findViewById(R.id.text_call);
         textViewShare = view.findViewById(R.id.text_share);
         editContact = view.findViewById(R.id.edit_btn);
+        deleteContact = view.findViewById(R.id.delete_btn);
         String textNoAviable = getActivity().getResources().getString(R.string.text_no_aviable);
         Bundle bundle = this.getArguments();
         if(bundle != null){
@@ -131,6 +138,56 @@ public class ContactDetailFragment extends android.app.Fragment {
             }
         });
 
+        deleteContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle(R.string.title_alert_dialog);
+                alertDialog.setMessage(R.string.message_alert_dialog);
+                alertDialog.setIcon(R.drawable.ic_delete_black_24dp);
+
+                alertDialog.setPositiveButton(R.string.text_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        managerAdministrator.deleteContact(contacto,index);
+                    }
+                });
+
+                alertDialog.setNegativeButton(R.string.text_calncel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog diag = alertDialog.create();
+                diag.show();
+
+                Button okButton = diag.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button cancelButton = diag.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                okButton.setTextColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+                cancelButton.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof ManagerAdministrator){
+            managerAdministrator = (ManagerAdministrator) context;
+        }else{
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        managerAdministrator = null;
     }
 }

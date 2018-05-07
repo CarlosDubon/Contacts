@@ -1,7 +1,9 @@
 package com.bonusteam.contacts;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -27,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -38,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class MainActivity extends AppCompatActivity implements Serializable {
+public class MainActivity extends AppCompatActivity implements Serializable,ManagerAdministrator {
 
     private int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
@@ -391,6 +394,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 Snackbar.make(viewPager,"Permissions denail, contacts cant be show",Snackbar.LENGTH_SHORT);
             }
         }
+
+    }
+
+    @Override
+    public void deleteContact(final Contacto contacto, final int index) {
+        contactList.remove(index);
+        contactAdapter.notifyItemRemoved(index);
+        contactAdapter.notifyItemRangeChanged(index,contactList.size());
+        Snackbar.make(viewPager,contacto.getName()+" "+ getResources().getString(R.string.deleted_ok_snack),Snackbar.LENGTH_SHORT).show();
 
     }
 }

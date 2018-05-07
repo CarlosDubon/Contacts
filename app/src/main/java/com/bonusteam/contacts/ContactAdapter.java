@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -73,6 +74,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
 
         //Dialog initialization
         dialogContact = new Dialog(parent.getContext());
+        dialogContact.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogContact.setContentView(R.layout.dialog_contact);
 
 
@@ -137,8 +139,8 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                                 break;
                         }
                     }
-
                     dialogContact.show();
+
 
                     btnFavorite.setOnClickListener(new View.OnClickListener() {
                         @Override
