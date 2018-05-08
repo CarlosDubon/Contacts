@@ -165,7 +165,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                             bundle.putParcelable("CONTACT_OBJ",contactosList.get(vHolder.getAdapterPosition()));
                             bundle.putInt("INDEX",vHolder.getAdapterPosition());
                             intent.putExtras(bundle);
-                            contex.startActivity(intent);
+                            contex.getApplicationContext().startActivity(intent);
                         }
                     });
                     callContactDiag.setOnClickListener(new View.OnClickListener() {

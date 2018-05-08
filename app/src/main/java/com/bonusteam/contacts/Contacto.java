@@ -128,4 +128,18 @@ public class Contacto implements Parcelable,Comparable<Contacto> {
         dest.writeString(birth);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
+
+    @Override
+    public String toString() {
+        return "Contacto{" +
+                "imagen='" + imagen + '\'' +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", numbers=" + numbers +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", birth='" + birth + '\'' +
+                ", isFavorite=" + isFavorite +
+                '}';
+    }
 }

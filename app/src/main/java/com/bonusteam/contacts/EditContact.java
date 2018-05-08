@@ -194,6 +194,7 @@ public class EditContact extends AppCompatActivity {
                 Bundle contactModify = new Bundle();
                 Intent intent = new Intent(this,MainActivity.class);
                 contactModify.putParcelable("MODIFY_CONTACT",modifyContact);
+                contactModify.putParcelable("OLD_CONTACT",editContact);
                 contactModify.putInt("INDEX_OC",index);
                 intent.putExtras(contactModify);
                 startActivity(intent);

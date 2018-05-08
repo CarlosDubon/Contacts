@@ -101,11 +101,26 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
         });
 
         if(getIntent().getExtras()!=null){
-            Contacto modifyContact = getIntent().getExtras().getParcelable("MODIFY_CONTACT");
+            final Contacto modifyContact = getIntent().getExtras().getParcelable("MODIFY_CONTACT");
+            final Contacto oldContact = getIntent().getExtras().getParcelable("OLD_CONTACT");
             int pos = getIntent().getExtras().getInt("INDEX_OC");
             if(modifyContact != null){
-                contactList.set(pos,modifyContact);
-                contactRecentAdapter.notifyDataSetChanged();
+
+                contactList.set(pos, modifyContact);
+                contactAdapter.notifyDataSetChanged();
+
+                if(contactFavList.indexOf(oldContact)>-1) {
+                    contactFavList.set(contactFavList.indexOf(oldContact), modifyContact);
+                    contactFavAdapter.notifyDataSetChanged();
+                }else{
+                    Log.d("FIND_CONTACT","No se encotro el contacto en lista favoritos");
+                }
+                if(contactRecentList.indexOf(oldContact)>-1) {
+                    contactRecentList.set(contactList.indexOf(oldContact), modifyContact);
+                    contactRecentAdapter.notifyDataSetChanged();
+                }else{
+                    Log.d("FIND_CONTACT","No se encotro el contacto en lista recientes");
+                }
 
             }
         }
@@ -167,8 +182,10 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
         query = query.toLowerCase();
         final ArrayList<Contacto> filterContactList = new ArrayList<>();
         for(Contacto model:contactList){
-            final String text = model.getName().toLowerCase();
-            if(text.startsWith(query) || text.contains(query)){
+            final String name = model.getName().toLowerCase();
+            final String phone = model.getNumbers().toString();
+            final String email = model.getEmail();
+            if(name.startsWith(query) || name.contains(query)  || phone.startsWith(query) || phone.contains(query) || email.startsWith(query) || email.contains(query)){
                 filterContactList.add(model);
             }
         }
