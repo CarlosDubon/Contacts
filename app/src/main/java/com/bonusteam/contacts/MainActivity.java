@@ -421,16 +421,19 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
             contactFavList.remove(contactFavList.indexOf(contacto));
             contactFavAdapter.notifyItemRemoved(contactFavList.indexOf(contacto));
             contactFavAdapter.notifyItemRangeChanged(contactFavList.indexOf(contacto),contactFavList.size());
+            contactFavAdapter.notifyDataSetChanged();
         }
         if(contactRecentList.indexOf(contacto)>-1){
             contactRecentList.remove(contactRecentList.indexOf(contacto));
             contactRecentAdapter.notifyItemRemoved(contactRecentList.indexOf(contacto));
             contactRecentAdapter.notifyItemRangeChanged(contactRecentList.indexOf(contacto),contactRecentList.size());
+            contactRecentAdapter.notifyDataSetChanged();
         }
         if(contactList.indexOf(contacto)>-1) {
             contactList.remove(contactList.indexOf(contacto));
             contactAdapter.notifyItemRemoved(contactList.indexOf(contacto));
             contactAdapter.notifyItemRangeChanged(contactList.indexOf(contacto), contactList.size());
+            contactAdapter.notifyDataSetChanged();
         }
         if(!contactList.contains(contacto)) {
             Snackbar.make(viewPager, contacto.getName() + " " + getResources().getString(R.string.deleted_ok_snack), Snackbar.LENGTH_SHORT).show();
@@ -439,5 +442,38 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
 
     @Override
     public void addContactFavorite(Context context, Contacto contacto, int index) {
+        if(contactList.contains(contacto)) {
+            contactList.get(contactList.indexOf(contacto)).setFavorite(true);
+            contactFavList.add(contacto);
+            contactFavAdapter.notifyItemInserted(contactFavList.size());
+            contactFavAdapter.notifyDataSetChanged();
+            contactAdapter.notifyDataSetChanged();
+        }
+        if(contactRecentList.contains(contacto)){
+            contactRecentList.get(contactList.indexOf(contacto)).setFavorite(true);
+            contactFavList.add(contacto);
+            contactFavAdapter.notifyItemInserted(contactFavList.size());
+            contactFavAdapter.notifyDataSetChanged();
+            contactRecentAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void removeContactFavorite(Context context, Contacto contacto, int index) {
+        if(contactFavList.contains(contacto)){
+            contactFavList.get(contactFavList.indexOf(contacto)).setFavorite(false);
+            contactFavList.remove(contactFavList.indexOf(contacto));
+            contactFavAdapter.notifyItemRemoved(contactFavList.indexOf(contacto));
+            contactFavAdapter.notifyItemRangeChanged(contactFavList.indexOf(contacto),contactFavList.size());
+            contactFavAdapter.notifyDataSetChanged();
+            contactAdapter.notifyDataSetChanged();
+            Snackbar.make(viewPager,contacto.getName()+" "+getResources().getString(R.string.text_contact_added),Snackbar.LENGTH_SHORT).show();
+        }
+        if(contactList.contains(contacto)){
+            contactList.get(contactList.indexOf(contacto)).setFavorite(false);
+            contactAdapter.notifyDataSetChanged();
+            Snackbar.make(viewPager,contacto.getName()+" "+getResources().getString(R.string.text_contact_removed),Snackbar.LENGTH_SHORT).show();
+
+        }
     }
 }

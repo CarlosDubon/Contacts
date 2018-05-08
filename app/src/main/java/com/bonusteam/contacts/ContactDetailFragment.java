@@ -176,7 +176,11 @@ public class ContactDetailFragment extends android.app.Fragment {
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                managerAdministrator.addContactFavorite(getActivity(),contacto,index);
+                if(!contacto.isFavorite()) {
+                    managerAdministrator.addContactFavorite(getActivity(), contacto, index);
+                }else{
+                    managerAdministrator.removeContactFavorite(getActivity(),contacto,index);
+                }
             }
         });
         return view;
