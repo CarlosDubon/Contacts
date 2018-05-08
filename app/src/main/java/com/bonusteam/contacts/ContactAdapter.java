@@ -194,7 +194,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                             AlertDialog.Builder alertDialog = new AlertDialog.Builder(contex);
                             alertDialog.setTitle(R.string.title_alert_dialog);
                             alertDialog.setMessage(R.string.message_alert_dialog);
-                            alertDialog.setIcon(R.drawable.ic_delete_black_24dp);
+                            alertDialog.setIcon(R.drawable.delete_icon_black);
 
                             alertDialog.setPositiveButton(R.string.text_accept, new DialogInterface.OnClickListener() {
                                 @Override

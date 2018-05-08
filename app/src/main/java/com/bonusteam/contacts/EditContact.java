@@ -197,6 +197,7 @@ public class EditContact extends AppCompatActivity {
                 contactModify.putParcelable("OLD_CONTACT",editContact);
                 contactModify.putInt("INDEX_OC",index);
                 intent.putExtras(contactModify);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case android.R.id.home:

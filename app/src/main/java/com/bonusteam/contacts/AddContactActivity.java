@@ -160,6 +160,7 @@ public class AddContactActivity extends AppCompatActivity {
                 contacto.setBirth(birth.getText().toString());
                 Intent intent = new Intent();
                 intent.putExtra("NEW_CONTACT",contacto);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 setResult(RESULT_OK,intent);
                 finish();
                 break;

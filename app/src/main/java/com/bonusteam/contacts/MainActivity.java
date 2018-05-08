@@ -109,13 +109,13 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
                 contactList.set(pos, modifyContact);
                 contactAdapter.notifyDataSetChanged();
 
-                if(contactFavList.indexOf(oldContact)>-1) {
+                if(contactFavList.indexOf(contactList.get(pos))>-1) {
                     contactFavList.set(contactFavList.indexOf(oldContact), modifyContact);
                     contactFavAdapter.notifyDataSetChanged();
                 }else{
                     Log.d("FIND_CONTACT","No se encotro el contacto en lista favoritos");
                 }
-                if(contactRecentList.indexOf(oldContact)>-1) {
+                if(contactRecentList.indexOf(contactList.get(pos))>-1) {
                     contactRecentList.set(contactList.indexOf(oldContact), modifyContact);
                     contactRecentAdapter.notifyDataSetChanged();
                 }else{
