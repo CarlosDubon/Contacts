@@ -186,7 +186,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                     shareContactDiag.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            shareContact(nameContactDiag.getText().toString() + "\n" + phoneContactDiag.getText().toString() + "\n" + emailContactDiag.getText().toString());
+                            shareContact(contactosList.get(vHolder.getAdapterPosition()));
                         }
                     });
                     deleteContactDiag.setOnClickListener(new View.OnClickListener() {
@@ -308,11 +308,18 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
         }
     }
 
-    public void shareContact(String info){
+    public void shareContact(Contacto contacto){
+        Contacto shareContact = contacto;
+        String phones = "";
+        for(int i=0;i<contacto.getNumbers().size();i++){
+            if(!contacto.getNumbers().get(i).equals("")){
+                phones = phones +"\n";
+            }
+        }
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         Bundle bundle = new Bundle();
-        bundle.putString(Intent.EXTRA_TEXT,info);
+        bundle.putString(Intent.EXTRA_TEXT,contacto.getName()+"\n"+phones+"\n"+contacto.getEmail()+"\n"+contacto.getBirth());
         shareIntent.putExtras(bundle);
         contex.startActivity(shareIntent);
 
