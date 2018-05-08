@@ -166,6 +166,7 @@ public abstract class ContactAdapter extends RecyclerView.Adapter<ContactAdapter
                             bundle.putInt("INDEX",vHolder.getAdapterPosition());
                             intent.putExtras(bundle);
                             contex.getApplicationContext().startActivity(intent);
+                            dialogContact.dismiss();
                         }
                     });
                     callContactDiag.setOnClickListener(new View.OnClickListener() {

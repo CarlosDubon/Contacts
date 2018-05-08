@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ public class ContactDetailFragment extends android.app.Fragment {
     TextView textViewName,textViewPhone,textViewBirth,textViewEmail,textViewCall,textViewShare,editContact,deleteContact;
     ImageView imageViewContact;
     Contacto contacto;
+    FloatingActionButton favoriteBtn;
     private ManagerAdministrator managerAdministrator;
     int index;
     @Nullable
@@ -49,6 +51,7 @@ public class ContactDetailFragment extends android.app.Fragment {
         textViewShare = view.findViewById(R.id.text_share);
         editContact = view.findViewById(R.id.edit_btn);
         deleteContact = view.findViewById(R.id.delete_btn);
+        favoriteBtn = view.findViewById(R.id.favorite_btn);
         String textNoAviable = getActivity().getResources().getString(R.string.text_no_aviable);
         Bundle bundle = this.getArguments();
         if(bundle != null){
@@ -170,7 +173,12 @@ public class ContactDetailFragment extends android.app.Fragment {
                 cancelButton.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
             }
         });
-
+        favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                managerAdministrator.addContactFavorite(getActivity(),contacto,index);
+            }
+        });
         return view;
     }
 

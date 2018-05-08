@@ -182,7 +182,9 @@ public class EditContact extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.add_contact_tb:
                 Contacto modifyContact = new Contacto();
-                modifyContact.setImagen(imageUri+"");
+                if(imageUri!=null) {
+                    modifyContact.setImagen(imageUri + "");
+                }
                 modifyContact.setName(nameContact.getText().toString());
                 for (int i=0;i<editTextPhones.size();i++){
                     if(!editTextPhones.get(i).getText().toString().equals("")) {

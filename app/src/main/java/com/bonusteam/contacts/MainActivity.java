@@ -106,21 +106,20 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
             int pos = getIntent().getExtras().getInt("INDEX_OC");
             if(modifyContact != null){
 
-                contactList.set(pos, modifyContact);
-                contactAdapter.notifyDataSetChanged();
-
                 if(contactFavList.indexOf(contactList.get(pos))>-1) {
-                    contactFavList.set(contactFavList.indexOf(oldContact), modifyContact);
+                    contactFavList.set(contactFavList.indexOf(contactList.get(pos)), modifyContact);
                     contactFavAdapter.notifyDataSetChanged();
                 }else{
                     Log.d("FIND_CONTACT","No se encotro el contacto en lista favoritos");
                 }
                 if(contactRecentList.indexOf(contactList.get(pos))>-1) {
-                    contactRecentList.set(contactList.indexOf(oldContact), modifyContact);
+                    contactRecentList.set(contactFavList.indexOf(contactList.get(pos)), modifyContact);
                     contactRecentAdapter.notifyDataSetChanged();
                 }else{
                     Log.d("FIND_CONTACT","No se encotro el contacto en lista recientes");
                 }
+                contactList.set(pos, modifyContact);
+                contactAdapter.notifyDataSetChanged();
 
             }
         }
@@ -226,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
 
             @Override
             public void addRecents(int index) {
+                contactList.get(index).setFavorite(true);
                 contactRecentList.add(0,contactList.get(index));
                 int i = contactRecentList.indexOf(contactList.get(index));
                 contactRecentAdapter.notifyItemInserted(index);
@@ -435,5 +435,9 @@ public class MainActivity extends AppCompatActivity implements Serializable,Mana
         if(!contactList.contains(contacto)) {
             Snackbar.make(viewPager, contacto.getName() + " " + getResources().getString(R.string.deleted_ok_snack), Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void addContactFavorite(Context context, Contacto contacto, int index) {
     }
 }
